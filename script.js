@@ -45,14 +45,12 @@ function draw(){
 			pelota.velocidad.y*=-0.8;
 		}
 		if(!jugadorConPelota){
-			for(jugador of equipo0.jugadores){
-				if(!jugador.agarrarPelota) jugador.agarrarPelota=true;
-				else if(sq(pelota.x-jugador.centro.x)+sq(pelota.y-jugador.centro.y)<sq(jugador.size)) jugadoresDisputandoPelota.push(jugador);
-			}
+			for(jugador of equipo0.jugadores) if(jugador!==ultimoJugadorConPelota&&sq(pelota.x-jugador.centro.x)+sq(pelota.y-jugador.centro.y)<sq(jugador.size)) jugadoresDisputandoPelota.push(jugador);
 			if(jugadoresDisputandoPelota.length){
 				jugadorConPelota=random(jugadoresDisputandoPelota);
 				jugadorConPelota.angulo=atan2(pelota.y-jugador.centro.y, pelota.x-jugador.centro.x);
 				jugadorConPelota.equipo.jugadorSeleccionado=jugadorConPelota;
+				ultimoJugadorConPelota=jugadorConPelota;
 			}
 		}
 		if(jugadorConPelota){
@@ -82,12 +80,10 @@ function keyReleased(){
 	}
 	if(keyCode===equipo0.teclaCambiarAtraccion){
 		equipo0.jugadorSeleccionado.multiplicadorDeAtraccion*=-1;
-		equipo0.jugadorSeleccionado.agarrarPelota=false;
 		if(jugadorConPelota===equipo0.jugadorSeleccionado) jugadorConPelota=null;
 	}
 	if(keyCode===equipo1.teclaCambiarAtraccion){
 		equipo1.jugadorSeleccionado.multiplicadorDeAtraccion*=-1;
-		equipo1.jugadorSeleccionado.agarrarPelota=false;
 		if(jugadorConPelota===equipo1.jugadorSeleccionado) jugadorConPelota=null;
 	}
 }
@@ -114,7 +110,6 @@ function Jugador(equipo, x, y){
 	this.multiplicadorDeAtraccion=1;
 	this.centro={x:x, y:y};
 	this.posicionEnFormacion={x:x, y:y};
-	this.agarrarPelota=true;
 }
 
 Jugador.prototype.size=20;
@@ -132,7 +127,14 @@ function moverHacia(jugador, x, y){
 
 function nuevoPartido(){
 	enPartido=true;
+	equipo0.goles=-1;
+	equipo1.goles=0;
+	gol(0);
+}
+
+function gol(){
 	equipo0.centro={x:0, y:0};
 	equipo1.centro={x:0, y:0};
 	pelota={x:floor(random(width/4, 3/4*width+1)), y:height/2, velocidad:{x:0, y:0}, size:10};
+	ultimoJugadorConPelota=null;
 }
