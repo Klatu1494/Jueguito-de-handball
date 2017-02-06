@@ -30,6 +30,7 @@ var equipo1;
 var equipos;
 var jugadorConPelota;
 var pelota;
+var ultimoEquipoConPelota;
 var enPartido;
 
 function setup(){
@@ -54,6 +55,11 @@ function draw(){
 		stroke('#fff');
 		fill(cancha.color);
 		rect(cancha.x, cancha.y, cancha.width, cancha.height);
+		line(cancha.x+cancha.width/2, cancha.y, cancha.x+cancha.width/2, cancha.y+cancha.height/3);
+		line(cancha.x+cancha.width/2, cancha.y+cancha.height*2/3, cancha.x+cancha.width/2, cancha.y+cancha.height);
+		ellipse(cancha.x+cancha.width/2, cancha.y+cancha.height/2, cancha.height/3);
+		fill('#fff');
+		ellipse(cancha.x+cancha.width/2, cancha.y+cancha.height/2, 2);
 		noStroke();
 		for(var equipo of equipos){
 			if(equipo.DT==='humano'){
@@ -63,148 +69,7 @@ function draw(){
 				equipo.centro.x+=vector.x;
 				equipo.centro.y+=vector.y;
 			}
-			else{
-				equipo.jugadorSeleccionado=jugadorMasCercanoA(pelota.centro.x, pelota.centro.y, equipo.jugadores);
-				var p;
-				if(pelota.velocidad.x===0){
-					if(pelota.velocidad.y===0) p=pelota.centro;
-					else p=distanciaASegmento(
-						equipo.jugadorSeleccionado.centro.x,
-						equipo.jugadorSeleccionado.centro.y,
-						pelota.centro.x,
-						0,
-						pelota.centro.x,
-						height
-					).puntoMasCercano;
-				}
-				else{
-					var m=pelota.velocidad.y/pelota.velocidad.x;
-					p=pelota.velocidad.x<0?
-						distanciaASegmento(
-							equipo.jugadorSeleccionado.centro.x,
-							equipo.jugadorSeleccionado.centro.y,
-							0,
-							pelota.centro.y-pelota.centro.x*m,
-							pelota.centro.x,
-							pelota.centro.y
-						).puntoMasCercano:
-						distanciaASegmento(
-							equipo.jugadorSeleccionado.centro.x,
-							equipo.jugadorSeleccionado.centro.y,
-							pelota.centro.x,
-							pelota.centro.y,
-							width,
-							pelota.centro.y+(width-pelota.centro.x)*m
-						).puntoMasCercano;
-				}
-				equipo.centro.x=p.x-equipo.jugadorSeleccionado.posicionEnFormacion.x;
-				equipo.centro.y=p.y-equipo.jugadorSeleccionado.posicionEnFormacion.y;
-				var multiplicador=equipo.comparadorConLaDistanciaDeTiro==='mayor que'?-1:1;
-				var xArcoContrario=width/2-multiplicador*width/2;
-				if(jugadorConPelota){
-					var equipoRival=equipo===equipo0?equipo1:equipo0;
-					if(jugadorConPelota.equipo===equipo){
-						if(equipo.despejando) despejar(equipoRival);
-						else{
-							var x=width/2-multiplicador/3*width;
-							if(jugadorConPelota.centro.y<height/2){
-								var y=height*2/3;
-								var jugador=jugadorMasCercanoA(x, y, equipo.jugadores);
-								equipo.centro={x:x-jugador.posicionEnFormacion.x, y:y-jugador.posicionEnFormacion.y};
-								if(multiplicador*equipo.distanciaDeTiroCorto<multiplicador*jugadorConPelota.centro.x&&multiplicador*jugadorConPelota.centro.x<multiplicador*equipo.distanciaDeTiroLargo&&jugadorConPelota.equipo.arquero.centro.y===topArcos+sizePalos/2+equipo.arquero.size/2+sizePelota&&noHayJugadoresDelanteDe(jugadorConPelota, multiplicador)) tiro(xArcoContrario, bottomArcos-apuntarAEstoDelPalo.tiroLargo);
-								else if(multiplicador*jugadorConPelota.centro.x<=multiplicador*equipo.distanciaDeTiroCorto&&jugadorConPelota.equipo.arquero.centro.y>height/2) tiro(xArcoContrario, topArcos+apuntarAEstoDelPalo.tiroCorto);
-								else{
-									equipo.jugadores.sort(sortFunction);
-									var pelotaPasada=false;
-									for(var jugador of equipo.jugadores){
-										if(jugador===jugadorConPelota) continue;
-										if(paseA(jugador)){
-											pelotaPasada=true;
-											break;
-										}
-									}
-									if(!pelotaPasada) despejar(equipoRival);
-								}
-							}
-							else if(jugadorConPelota.centro.y>height/2){
-								var y=height/3;
-								var jugador=jugadorMasCercanoA(x, y, equipo.jugadores);
-								equipo.centro={x:x-jugador.posicionEnFormacion.x, y:y-jugador.posicionEnFormacion.y};
-								if(multiplicador*equipo.distanciaDeTiroCorto<multiplicador*jugadorConPelota.centro.x&&multiplicador*jugadorConPelota.centro.x<multiplicador*equipo.distanciaDeTiroLargo&&jugadorConPelota.equipo.arquero.centro.y===bottomArcos-sizePalos/2-equipo.arquero.size/2-sizePelota&&noHayJugadoresDelanteDe(jugadorConPelota, multiplicador)) tiro(xArcoContrario, topArcos+apuntarAEstoDelPalo.tiroLargo);
-								else if(multiplicador*jugadorConPelota.centro.x<=multiplicador*equipo.distanciaDeTiroCorto&&jugadorConPelota.equipo.arquero.centro.y<height/2) tiro(xArcoContrario, bottomArcos-apuntarAEstoDelPalo.tiroCorto);
-								else{
-									equipo.jugadores.sort(sortFunction);
-									var pelotaPasada=false;
-									for(var jugador of equipo.jugadores){
-										if(jugador===jugadorConPelota) continue;
-										if(paseA(jugador)){
-											pelotaPasada=true;
-											break;
-										}
-									}
-									if(!pelotaPasada) despejar(equipoRival);
-								}
-							}
-							else{
-								var y=height/3+floor(random())*height/3;
-								var jugador=jugadorMasCercanoA(x, y, equipo.jugadores);
-								equipo.centro={x:x-jugador.posicionEnFormacion.x, y:y-jugador.posicionEnFormacion.y};
-								equipo.jugadores.sort(sortFunction);
-								var pelotaPasada=false;
-								for(var jugador of equipo.jugadores){
-									if(jugador===jugadorConPelota) continue;
-									if(paseA(jugador)){
-										pelotaPasada=true;
-										break;
-									}
-								}
-								if(!pelotaPasada) despejar(equipoRival);
-							}
-						}
-					}
-					else{
-					 	var xDelanteros=xArcoContrario;
-					 	var equipoRival
-						for(jugador of equipoRival.jugadores){
-							if(multiplicador*xDelanteros<multiplicador*jugador.centro.x){
-								xDelanteros=jugador.centro.x;
-								var delanteros=[];
-							}
-							if(xDelanteros===jugador.centro.x){
-								delanteros.push(jugador);
-							}
-						}
-						delanteros.sort(function(a, b){
-							return Math.min(
-								abs(a.centro.y-height/3),
-								abs(a.centro.y-height*2/3)
-							)-Math.min(
-								abs(b.centro.y-height/3),
-								abs(b.centro.y-height*2/3)
-							);
-						})
-						delanteros.filter(function(a, index, array){
-							return a.centro.x===array[0].centro.x;
-						})
-						var distancia=Infinity;
-						for(var delantero of delanteros){
-							for(var jugador of equipo.jugadores){
-								var objeto=distanciaASegmento(jugador.centro.x, jugador.centro.y, jugadorConPelota.centro.x, jugadorConPelota.centro.y, delantero.centro.x, delantero.centro.y);
-								if(objeto.distancia<distancia){
-									var array=[]
-									distancia=objeto.distancia;
-								}
-								if(objeto.distancia===distancia){
-									array.push({punto: objeto.puntoMasCercano, jugador: jugador});
-								}
-							}
-						}
-						var elemento=random(array);
-						equipo.centro.x=elemento.punto.x-elemento.jugador.posicionEnFormacion.x;
-						equipo.centro.y=elemento.punto.y-elemento.jugador.posicionEnFormacion.y;
-					}
-				}
-			}
+			else AI(equipo);
 			for(var jugador of equipo.jugadores){
 				pelota.velocidad.x+=g*jugador.multiplicadorDeAtraccion*cos(atan2(jugador.centro.y-pelota.centro.y, jugador.centro.x-pelota.centro.x))/(sq(pelota.centro.x-jugador.centro.x)+sq(pelota.centro.y-jugador.centro.y));
 				pelota.velocidad.y+=g*jugador.multiplicadorDeAtraccion*sin(atan2(jugador.centro.y-pelota.centro.y, jugador.centro.x-pelota.centro.x))/(sq(pelota.centro.x-jugador.centro.x)+sq(pelota.centro.y-jugador.centro.y));
@@ -218,29 +83,25 @@ function draw(){
 				}
 				else moverHacia(jugador, equipo.centro.x+jugador.posicionEnFormacion.x, equipo.centro.y+jugador.posicionEnFormacion.y);
 				fill(jugador.multiplicadorDeAtraccion>0?'#f00':'#0ff');
-				ellipse(jugador.centro.x, jugador.centro.y, jugador.size);
-				fill(cancha.color);
-				ellipse(jugador.centro.x, jugador.centro.y, jugador.size*(1-sizeCirculoDeAlrededor));
+				ellipse(jugador.centro.x, jugador.centro.y+jugador.size/4, jugador.size, jugador.size/2);
 				fill(colorPiel);
-				ellipse(jugador.centro.x, jugador.centro.y-jugador.size*(1-sizeCirculoDeAlrededor)/8, jugador.size*(1-sizeCirculoDeAlrededor)/4);
+				ellipse(jugador.centro.x, jugador.centro.y-jugador.size*3/8, jugador.size/4);
 				fill(equipo.color);
-				ellipse(jugador.centro.x, jugador.centro.y+jugador.size*(1-sizeCirculoDeAlrededor)/6, jugador.size*(1-sizeCirculoDeAlrededor)/2, jugador.size*(1-sizeCirculoDeAlrededor)/3);
-				rect(jugador.centro.x-jugador.size*(1-sizeCirculoDeAlrededor)/4, jugador.centro.y+jugador.size*(1-sizeCirculoDeAlrededor)/6, jugador.size*(1-sizeCirculoDeAlrededor)/2, jugador.size*sqrt(sq((1-sizeCirculoDeAlrededor)/2)-sq((1-sizeCirculoDeAlrededor)/4)));
+				ellipse(jugador.centro.x, jugador.centro.y-jugador.size/12, jugador.size/2, jugador.size/3);
+				rect(jugador.centro.x-jugador.size/4, jugador.centro.y-jugador.size/12, jugador.size/2, sqrt(sq(jugador.size/2)-sq(jugador.size/4)));
 			}
 			pelota.velocidad.x+=g*equipo.arquero.multiplicadorDeAtraccion*cos(atan2(equipo.arquero.centro.y-pelota.centro.y, equipo.arquero.centro.x-pelota.centro.x))/(sq(pelota.centro.x-equipo.arquero.centro.x)+sq(pelota.centro.y-equipo.arquero.centro.y));
 			pelota.velocidad.y+=g*equipo.arquero.multiplicadorDeAtraccion*sin(atan2(equipo.arquero.centro.y-pelota.centro.y, equipo.arquero.centro.x-pelota.centro.x))/(sq(pelota.centro.x-equipo.arquero.centro.x)+sq(pelota.centro.y-equipo.arquero.centro.y));
 			moverHacia(equipo.arquero, equipo.arquero.centro.x, constrain(pelota.centro.y, topArcos+sizePalos/2+equipo.arquero.size/2+sizePelota, bottomArcos-sizePalos/2-equipo.arquero.size/2-sizePelota));
 			fill(equipo.arquero.multiplicadorDeAtraccion>0?'#f00':'#0ff');
-			ellipse(equipo.arquero.centro.x, equipo.arquero.centro.y, equipo.arquero.size);
-			fill(cancha.color);
-			ellipse(equipo.arquero.centro.x, equipo.arquero.centro.y, equipo.arquero.size*0.75);
+			ellipse(equipo.arquero.centro.x, equipo.arquero.centro.y+equipo.arquero.size/4, equipo.arquero.size, equipo.arquero.size/2);
 			fill(colorPiel);
-			ellipse(equipo.arquero.centro.x, equipo.arquero.centro.y-equipo.arquero.size*0.09375, equipo.arquero.size*0.1875);
+			ellipse(equipo.arquero.centro.x, equipo.arquero.centro.y-equipo.arquero.size*3/8, equipo.arquero.size/4);
 			fill(equipo.color);
-			ellipse(equipo.arquero.centro.x, equipo.arquero.centro.y+equipo.arquero.size*0.125, equipo.arquero.size*0.375, equipo.arquero.size*0.25);
-			rect(equipo.arquero.centro.x-equipo.arquero.size*0.1875, equipo.arquero.centro.y+equipo.arquero.size*0.125, equipo.arquero.size*0.375, equipo.arquero.size*sqrt(sq(0.375)-sq(0.1875)));
+			ellipse(equipo.arquero.centro.x, equipo.arquero.centro.y-equipo.arquero.size/12, equipo.arquero.size/2, equipo.arquero.size/3);
+			rect(equipo.arquero.centro.x-equipo.arquero.size/4, equipo.arquero.centro.y-equipo.arquero.size/12, equipo.arquero.size/2, sqrt(sq(equipo.arquero.size/2)-sq(equipo.arquero.size/4)));
 		}
-		fill('#fff')
+		fill('#1c1a1a')
 		for(var palo of cancha.palos){
 			if(sq(pelota.centro.x-palo.x)+sq(pelota.centro.y-palo.y)<=sq(sizePelota/2+sizePalos/2)){
 				vector=new p5.Vector(pelota.velocidad.x, pelota.velocidad.y);
@@ -296,6 +157,7 @@ function draw(){
 			ellipse(palo.x, palo.y, sizePalos);
 		}
 		fill('#eee');
+		strokeWeight(2);
 		var posicionAnteriorDeLaPelota=Object.assign({}, pelota.centro);
 		pelota.centro.x+=pelota.velocidad.x;
 		pelota.centro.y+=pelota.velocidad.y;
@@ -317,6 +179,7 @@ function draw(){
 				jugadorConPelota=random(jugadoresDisputandoPelota);
 				jugadorConPelota.angulo=atan2(pelota.centro.y-jugadorConPelota.centro.y, pelota.centro.x-jugadorConPelota.centro.x);
 				jugadorConPelota.equipo.jugadorSeleccionado=jugadorConPelota;
+				ultimoEquipoConPelota=jugadorConPelota.equipo;
 				for(var equipo of equipos) if(equipo===jugadorConPelota.equipo||equipo.DT==='AI') for(jugador of equipo.jugadores) jugador.multiplicadorDeAtraccion=1;
 			}
 		}
@@ -471,12 +334,13 @@ function tiro(x, y){
 }
 
 function paseA(jugador){
+	console.log('pase a ', jugador);
 	if(noHayJugadoresEntreJugadorConPelotaY(jugador.centro.x, jugador.centro.y)) return tiro(jugador.centro.x, jugador.centro.y);
-	else if(jugadorConPelota.centro.y+jugador.centro.y<width){
+	else if(jugadorConPelota.centro.y+jugador.centro.y<height){
 		if(noHayJugadoresEntreJugadorConPelotaY(jugador.centro.x, -jugador.centro.y, 'arriba')) return tiro(jugador.centro.x, -jugador.centro.y);
 		else if(noHayJugadoresEntreJugadorConPelotaY(jugador.centro.x, 2*width-jugador.centro.y, 'abajo')) return tiro(jugador.centro.x, -jugador.centro.y);
 	}
-	else if(width<jugadorConPelota.centro.y+jugador.centro.y){
+	else if(height<jugadorConPelota.centro.y+jugador.centro.y){
 		if(noHayJugadoresEntreJugadorConPelotaY(jugador.centro.x, 2*width-jugador.centro.y, 'abajo')) return tiro(jugador.centro.x, 2*width-jugador.centro.y);
 		else if(noHayJugadoresEntreJugadorConPelotaY(jugador.centro.x, -jugador.centro.y, 'arriba')) return tiro(jugador.centro.x, -jugador.centro.y);
 	}
@@ -513,7 +377,7 @@ function noHayJugadoresEntreJugadorConPelotaY(x, y, proyectar){
 				if(
 					distanciaASegmento(
 						jugador.centro.x,
-						-jugador.centro.y+(proyectar==='abajo'?0:width*2),
+						-jugador.centro.y+(proyectar==='abajo'?width*2:0),
 						x,
 						y,
 						jugadorConPelota.centro.x+(jugadorConPelota.size+sizePelota)*cos(angulo)/2,
@@ -589,4 +453,154 @@ function despejar(equipoRival){
 	}
 	angulo=random(angulos);
 	tiro(jugadorConPelota.centro.x+(sizePelota+jugadorConPelota.size)*cos(angulo), jugadorConPelota.centro.y+(sizePelota+jugadorConPelota.size)*sin(angulo));
+}
+
+function AI(equipo){
+	var multiplicador=equipo.comparadorConLaDistanciaDeTiro==='mayor que'?-1:1;
+	var xArcoContrario=width/2-multiplicador*width/2;
+	var x=width/2-multiplicador/3*width;
+	if(ultimoEquipoConPelota===equipo){
+		var jugador=jugadorMasCercanoA(x, cancha.y+cancha.height/2, equipo.jugadores);
+		equipo.centro.x=x-jugador.posicionEnFormacion.x;
+	}
+	else{
+		equipo.jugadorSeleccionado=jugadorMasCercanoA(pelota.centro.x, pelota.centro.y, equipo.jugadores);
+		var p;
+		if(pelota.velocidad.x===0){
+			if(pelota.velocidad.y===0) p=pelota.centro;
+			else p=distanciaASegmento(
+				equipo.jugadorSeleccionado.centro.x,
+				equipo.jugadorSeleccionado.centro.y,
+				pelota.centro.x,
+				0,
+				pelota.centro.x,
+				height
+			).puntoMasCercano;
+		}
+		else{
+			var m=pelota.velocidad.y/pelota.velocidad.x;
+			p=pelota.velocidad.x<0?
+				distanciaASegmento(
+					equipo.jugadorSeleccionado.centro.x,
+					equipo.jugadorSeleccionado.centro.y,
+					0,
+					pelota.centro.y-pelota.centro.x*m,
+					pelota.centro.x,
+					pelota.centro.y
+				).puntoMasCercano:
+				distanciaASegmento(
+					equipo.jugadorSeleccionado.centro.x,
+					equipo.jugadorSeleccionado.centro.y,
+					pelota.centro.x,
+					pelota.centro.y,
+					width,
+					pelota.centro.y+(width-pelota.centro.x)*m
+				).puntoMasCercano;
+		}
+		equipo.centro.x=p.x-equipo.jugadorSeleccionado.posicionEnFormacion.x;
+		equipo.centro.y=p.y-equipo.jugadorSeleccionado.posicionEnFormacion.y;
+	}
+	if(jugadorConPelota){
+		var equipoRival=equipo===equipo0?equipo1:equipo0;
+		if(jugadorConPelota.equipo===equipo){
+			if(equipo.despejando) despejar(equipoRival);
+			else{
+				if(jugadorConPelota.centro.y<height/2){
+					var y=height*2/3;
+					var jugador=jugadorMasCercanoA(x, y, equipo.jugadores);
+					equipo.centro={x:x-jugador.posicionEnFormacion.x, y:y-jugador.posicionEnFormacion.y};
+					if(multiplicador*equipo.distanciaDeTiroCorto<multiplicador*jugadorConPelota.centro.x&&multiplicador*jugadorConPelota.centro.x<multiplicador*equipo.distanciaDeTiroLargo&&jugadorConPelota.equipo.arquero.centro.y===topArcos+sizePalos/2+equipo.arquero.size/2+sizePelota&&noHayJugadoresDelanteDe(jugadorConPelota, multiplicador)) tiro(xArcoContrario, bottomArcos-apuntarAEstoDelPalo.tiroLargo);
+					else if(multiplicador*jugadorConPelota.centro.x<=multiplicador*equipo.distanciaDeTiroCorto&&jugadorConPelota.equipo.arquero.centro.y>height/2) tiro(xArcoContrario, topArcos+apuntarAEstoDelPalo.tiroCorto);
+					else{
+						equipo.jugadores.sort(sortFunction);
+						var pelotaPasada=false;
+						for(var jugador of equipo.jugadores){
+							if(jugador===jugadorConPelota) continue;
+							if(paseA(jugador)){
+								pelotaPasada=true;
+								break;
+							}
+						}
+						if(!pelotaPasada) despejar(equipoRival);
+					}
+				}
+				else if(jugadorConPelota.centro.y>height/2){
+					var y=height/3;
+					var jugador=jugadorMasCercanoA(x, y, equipo.jugadores);
+					equipo.centro={x:x-jugador.posicionEnFormacion.x, y:y-jugador.posicionEnFormacion.y};
+					if(multiplicador*equipo.distanciaDeTiroCorto<multiplicador*jugadorConPelota.centro.x&&multiplicador*jugadorConPelota.centro.x<multiplicador*equipo.distanciaDeTiroLargo&&jugadorConPelota.equipo.arquero.centro.y===bottomArcos-sizePalos/2-equipo.arquero.size/2-sizePelota&&noHayJugadoresDelanteDe(jugadorConPelota, multiplicador)) tiro(xArcoContrario, topArcos+apuntarAEstoDelPalo.tiroLargo);
+					else if(multiplicador*jugadorConPelota.centro.x<=multiplicador*equipo.distanciaDeTiroCorto&&jugadorConPelota.equipo.arquero.centro.y<height/2) tiro(xArcoContrario, bottomArcos-apuntarAEstoDelPalo.tiroCorto);
+					else{
+						equipo.jugadores.sort(sortFunction);
+						var pelotaPasada=false;
+						for(var jugador of equipo.jugadores){
+							if(jugador===jugadorConPelota) continue;
+							if(paseA(jugador)){
+								pelotaPasada=true;
+								break;
+							}
+						}
+						if(!pelotaPasada) despejar(equipoRival);
+					}
+				}
+				else{
+					var y=height/3+floor(random())*height/3;
+					var jugador=jugadorMasCercanoA(x, y, equipo.jugadores);
+					equipo.centro={x:x-jugador.posicionEnFormacion.x, y:y-jugador.posicionEnFormacion.y};
+					equipo.jugadores.sort(sortFunction);
+					var pelotaPasada=false;
+					for(var jugador of equipo.jugadores){
+						if(jugador===jugadorConPelota) continue;
+						if(paseA(jugador)){
+							pelotaPasada=true;
+							break;
+						}
+					}
+					if(!pelotaPasada) despejar(equipoRival);
+				}
+			}
+		}
+		else{
+		 	var xDelanteros=xArcoContrario;
+		 	var equipoRival
+			for(jugador of equipoRival.jugadores){
+				if(jugador===jugadorConPelota) continue;
+				if(multiplicador*xDelanteros<multiplicador*jugador.centro.x){
+					xDelanteros=jugador.centro.x;
+					var delanteros=[];
+				}
+				if(xDelanteros===jugador.centro.x){
+					delanteros.push(jugador);
+				}
+			}
+			delanteros.sort(function(a, b){
+				return Math.min(
+					abs(a.centro.y-height/3),
+					abs(a.centro.y-height*2/3)
+				)-Math.min(
+					abs(b.centro.y-height/3),
+					abs(b.centro.y-height*2/3)
+				);
+			})
+			delanteros.filter(function(a, index, array){
+				return a.centro.x===array[0].centro.x;
+			})
+			var distancia=Infinity;
+			for(var delantero of delanteros){
+				for(var jugador of equipo.jugadores){
+					var objeto=distanciaASegmento(jugador.centro.x, jugador.centro.y, jugadorConPelota.centro.x, jugadorConPelota.centro.y, delantero.centro.x, delantero.centro.y);
+					if(objeto.distancia<distancia){
+						var array=[]
+						distancia=objeto.distancia;
+					}
+					if(objeto.distancia===distancia){
+						array.push({punto: objeto.puntoMasCercano, jugador: jugador});
+					}
+				}
+			}
+			var elemento=random(array);
+			equipo.centro.x=elemento.punto.x-elemento.jugador.posicionEnFormacion.x;
+			equipo.centro.y=elemento.punto.y-elemento.jugador.posicionEnFormacion.y;
+		}
+	}
 }
