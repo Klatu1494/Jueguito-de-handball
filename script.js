@@ -230,6 +230,8 @@ function keyReleased(){
 	for(equipo of equipos){
 		for(var tecla of teclas) if(keyCode===equipo['tecla'+tecla].code) equipo['tecla'+tecla].presionada=false;
 		if(keyCode===equipo.teclaCambiarAtraccion&&equipo.DT==='humano'){
+			jugadorConPelota.angulo=jugadorConPelota.angulo+(random()*2-1)*(100-jugadorConPelota.stats.punteria)/100;
+			pelota.centro={x:jugadorConPelota.centro.x+cos(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2, y:jugadorConPelota.centro.y+sin(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2};
 			equipo.jugadorSeleccionado.multiplicadorDeAtraccion=(0<equipo.jugadorSeleccionado.multiplicadorDeAtraccion?-equipo.jugadorSeleccionado.stats.repulsion:equipo.jugadorSeleccionado.stats.atraccion)/50;
 			if(jugadorConPelota===equipo.jugadorSeleccionado) jugadorConPelota=null;
 		}
@@ -337,8 +339,8 @@ function apuntarA(x, y){
 function tiro(x, y){
 	if(apuntarA(x, y)){
 		jugadorConPelota.equipo.despejando=false;
-		jugadorConPelota.angulo=jugadorConPelota.angulo+(random()*2-1)*jugadorConPelota.stats.punteria/100;
-		pelota.centro={x:jugadorConPelota.centro.x+cos(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2, y:jugadorConPelota.centro.y+sin(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2}
+		jugadorConPelota.angulo=jugadorConPelota.angulo+(random()*2-1)*(100-jugadorConPelota.stats.punteria)/100;
+		pelota.centro={x:jugadorConPelota.centro.x+cos(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2, y:jugadorConPelota.centro.y+sin(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2};
 		jugadorConPelota.multiplicadorDeAtraccion=(0<jugadorConPelota.multiplicadorDeAtraccion?-jugadorConPelota.stats.repulsion:jugadorConPelota.stats.atraccion)/50;
 		jugadorConPelota=null;
 	}
