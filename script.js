@@ -364,9 +364,13 @@ function apuntarA(x, y){
 }
 
 function soltarPelota(){
-	var nAngulo = mathRandomNormalizadoIntervalo (50, jugadorConPelota.angulo, 1-jugadorConPelota.punteria /100);
+	console.log ("resolviendo ruido de ángulo por punteria");
+	console.log ("ángulo previo " + jugadorConPelota.angulo);
+	console.log ("punteria " + jugadorConPelota.stats.punteria);
+	var nAngulo = mathRandomNormalizadoIntervalo (1, jugadorConPelota.angulo, 1-jugadorConPelota.stats.punteria / 100);
+	console.log ("ángulo con ruido " + nAngulo);
 	jugadorConPelota.angulo = nAngulo;
-	pelota.centro={x:jugadorConPelota.centro.x+cos(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2, y:jugadorConPelota.centro.y+sin(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2};
+	pelota.centro={x:jugadorConPelota.centro.x + cos(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2, y:jugadorConPelota.centro.y+sin(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2};
 	jugadorConPelota.multiplicadorDeAtraccion=(0<jugadorConPelota.multiplicadorDeAtraccion?-jugadorConPelota.stats.repulsion:jugadorConPelota.stats.atraccion)/50;
 	jugadorConPelota=null;
 }
@@ -776,7 +780,7 @@ function mathFactorial (n){
 
 // Función de combinación
 function mathComb (n, c){
-	return mathFactrial (n) / (mathFactrial(c) * mathfactorial(n-c));
+	return mathFactorial (n) / (mathFactorial(c) * mathFactorial(n-c));
 }
 
 // Acumulación de combinaciones
@@ -793,7 +797,7 @@ function mathRandomNormalizado (norm) {
 	// Seleccionar la pieza
 	var i = 0;
 	var c = 1;
-	var r = Math.random () * Math.pow(2, norm));
+	var r = Math.random () * Math.pow(2, norm);
 	while (c < r) {
 		r -= c;
 		i++;
@@ -806,5 +810,6 @@ function mathRandomNormalizado (norm) {
 // Rand normalizado. Devuelve un real esperado expected, con máximo error epsilon
 function mathRandomNormalizadoIntervalo (norm, expected, epsilon){
 	var r = mathRandomNormalizado (norm);
+	console.log ("norm: " + norm +". expected: " +expected + ". epsilon" + epsilon);
 	return r * (2 * epsilon) + (expected - 0.5);
 }
