@@ -783,33 +783,37 @@ function mathComb (n, c){
 	return mathFactorial (n) / (mathFactorial(c) * mathFactorial(n-c));
 }
 
-// Acumulación de combinaciones
-function mathCombAcumuldas (n, c){
-	var acc_sum=0;
-	for (i=0; i <=c; i++){
-		acc_sum += mathComb (n,i);
+class Normalizador{
+	var Norm;
+	var CombGeneradas
+	constructor (norm){
+		this.Norm = norm;
+		CombGeneradas = new Array(norm);
 	}
-	return acc_sum;
-}
 
-// Random normalizado. Devuelve un real en [0,1] normalizado a 0.5
-function mathRandomNormalizado (norm) {
-	// Seleccionar la pieza
-	var i = 0;
-	var c = 1;
-	var r = Math.random () * Math.pow(2, norm);
-	while (c < r) {
-		r -= c;
-		i++;
-		c = mathComb (norm, i);
+	Inicializar (){
+		for (var i = 0; i <= Norm; i++) {
+			CombGeneradas[i] = mathComb(norm,i);
 	}
-	var piece = i;
-	return (i + Math.random ()) / norm;
-}
+	
+	// Rand normalizado. Devuelve un real esperado expected, con máximo error epsilon
+	RandomNormalizado (expected, epsilon)
+	{
+		var r = RandomNormalizado ();
+		return r * (2 * epsilon) + (expected - 0.5);
+	}
 
-// Rand normalizado. Devuelve un real esperado expected, con máximo error epsilon
-function mathRandomNormalizadoIntervalo (norm, expected, epsilon){
-	var r = mathRandomNormalizado (norm);
-	console.log ("norm: " + norm +". expected: " +expected + ". epsilon" + epsilon);
-	return r * (2 * epsilon) + (expected - 0.5);
+	// Random normalizado. Devuelve un real en [0,1] normalizado a 0.5
+	RandomNormalizado (){
+		var i = 0;
+		var c = 1;
+		var r = Math.random () * Math.pow(2, Norm);
+		while (c < r) {
+			r -= c;
+			i++;
+			c = CombGeneradas(i);
+		}
+		// i es el intervalo elegido
+		return (i + Math.random ()) / Norm;
+	}
 }
