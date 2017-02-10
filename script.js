@@ -62,6 +62,7 @@ var jugadorConPelota;
 var pelota;
 var ultimoEquipoConPelota;
 var enPartido;
+var Normalizador;
 
 function setup(){
 	createCanvas(WIDTH, HEIGHT);
@@ -77,6 +78,11 @@ function setup(){
 	equipo1.agregarJugador(width*3/5, height/5, {atraccion:50, repulsion:50, punteria:50});
 	equipo1.agregarJugador(width*3/5, height*4/5, {atraccion:50, repulsion:50, punteria:50});
 	textAlign(CENTER, TOP);
+
+	// Inicializar el normalizador
+	Normalizador = new NormalizadorRandom(10);
+	Normalizador.Inicializar();
+
 	nuevoPartido()
 }
 
@@ -362,9 +368,9 @@ function apuntarA(x, y){
 }
 
 function soltarPelota(){
-	var nAngulo = mathRandomNormalizadoIntervalo (50, jugadorConPelota.angulo, 1-jugadorConPelota.stats.punteria/100);
+	var nAngulo = this.Normalizador.RandomNormalizado (jugadorConPelota.angulo, 1 - jugadorConPelota.stats.punteria / 100);
 	jugadorConPelota.angulo = nAngulo;
-	pelota.centro={x:jugadorConPelota.centro.x+cos(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2, y:jugadorConPelota.centro.y+sin(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2};
+	pelota.centro={x:jugadorConPelota.centro.x + cos(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2, y:jugadorConPelota.centro.y+sin(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2};
 	jugadorConPelota.multiplicadorDeAtraccion=(0<jugadorConPelota.multiplicadorDeAtraccion?-jugadorConPelota.stats.repulsion:jugadorConPelota.stats.atraccion)/50;
 	jugadorConPelota=null;
 }
@@ -765,44 +771,49 @@ function dibujarJugador(equipo, patron, color1, color2, anchoPatron){
 	ctx.fill();
 }
 
-// Función factorial. Devuelve -1 cuando hay error
-function mathFactorial (n){
-	if (n < 0) return -1;
-	if (n===0) return 1;
-	return n * mathFactorial (n-1);
-}
-
-// Función de combinación
-function mathComb (n, c){
-	return mathFactorial (n) / (mathFactorial(c) * mathFactorial(n-c));
-}
-
-// Acumulación de combinaciones
-function mathCombAcumuldas (n, c){
-	var acc_sum=0;
-	for (i=0; i <=c; i++){
-		acc_sum += mathComb (n,i);
+class Combinatoria {
+	// Función factorial. Devuelve -1 cuando hay error
+	static Factorial (n){
+		if (n < 0) return -1;
+		if (n===0) return 1;
+		return n * this.Factorial (n - 1);
 	}
-	return acc_sum;
-}
 
-// Random normalizado. Devuelve un real en [0,1] normalizado a 0.5
-function mathRandomNormalizado (norm) {
-	// Seleccionar la pieza
-	var i = 0;
-	var c = 1;
-	var r = Math.random () * Math.pow(2, norm);
-	while (c < r) {
-		r -= c;
-		i++;
-		c = mathComb (norm, i);
+	// Función de combinación
+	static Comb (n, c){
+		return this.Factorial (n) / (this.Factorial(c) * this.Factorial(n-c));
 	}
-	var piece = i;
-	return (i + Math.random()) / norm;
 }
 
-// Rand normalizado. Devuelve un real esperado expected, con máximo error epsilon
-function mathRandomNormalizadoIntervalo (norm, expected, epsilon){
-	var r = mathRandomNormalizado (norm);
-	return r * (2 * epsilon) + (expected - 0.5);
+class NormalizadorRandom{
+	constructor (norm){
+		this.Norm = norm;
+		this.CombGeneradas = new Array(norm);
+	}
+
+	Inicializar (){
+		for (var i = 0; i <= this.Norm; i++) {
+			this.CombGeneradas[i] = Combinatoria.Comb(this.Norm, i);
+		}
+	}
+	
+	// Rand normalizado. Devuelve un real esperado expected, con máximo error epsilon
+	RandomNormalizado (expected, epsilon){
+		var r = RandomNormalizado ();
+		return r * (2 * epsilon) + (expected - 0.5);
+	}
+
+	// Random normalizado. Devuelve un real en [0,1] normalizado a 0.5
+	RandomNormalizado (){
+		var i = 0;
+		var c = 1;
+		var r = Math.random () * Math.pow(2, this.Norm);
+		while (c < r) {
+			r -= c;
+			i++;
+			c = this.CombGeneradas[i];
+		}
+		// i es el intervalo elegido
+		return (i + Math.random ()) / this.Norm;
+	}
 }
