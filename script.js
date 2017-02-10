@@ -339,7 +339,9 @@ function apuntarA(x, y){
 function tiro(x, y){
 	if(apuntarA(x, y)){
 		jugadorConPelota.equipo.despejando=false;
-		jugadorConPelota.angulo=jugadorConPelota.angulo+(random()*2-1)*(100-jugadorConPelota.stats.punteria)/100;
+		var nAngulo = mathRandomNormalizadoIntervalo (50, jugadorConPelota.angulo, 1-jugadorConPelota.punteria /100);
+		jugadorConPelota.angulo = nAngulo;
+		//		jugadorConPelota.angulo=jugadorConPelota.angulo+(random()*2-1)*(100-jugadorConPelota.stats.punteria)/100;
 		pelota.centro={x:jugadorConPelota.centro.x+cos(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2, y:jugadorConPelota.centro.y+sin(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2};
 		jugadorConPelota.multiplicadorDeAtraccion=(0<jugadorConPelota.multiplicadorDeAtraccion?-jugadorConPelota.stats.repulsion:jugadorConPelota.stats.atraccion)/50;
 		jugadorConPelota=null;
@@ -692,7 +694,7 @@ function dibujarLineaPunteada(x1, y1, x2, y2){
 	line(x1+cos(angulo)*anchoLinea*i, y1+sin(angulo)*anchoLinea*i, x2, y2);
 }
 
-// Funciónn factorial. Devuelve -1 cuando hay error
+// Función factorial. Devuelve -1 cuando hay error
 function mathFactorial (n){
 	if (n < 0) return -1;
 	if (n===0) return 1;
