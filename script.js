@@ -80,7 +80,7 @@ function setup(){
 	textAlign(CENTER, TOP);
 
 	// Inicializar el normalizador
-	Normalizador = new Normalizador(10);
+	Normalizador = new NormalizadorRandom(10);
 	Normalizador.Inicializar();
 
 	nuevoPartido()
@@ -773,34 +773,34 @@ function dibujarJugador(equipo, patron, color1, color2, anchoPatron){
 	ctx.fill();
 }
 
-// Función factorial. Devuelve -1 cuando hay error
-function mathFactorial (n){
-	if (n < 0) return -1;
-	if (n===0) return 1;
-	return n * mathFactorial (n-1);
+class Combinatoria {
+	// Función factorial. Devuelve -1 cuando hay error
+	static Factorial (n){
+		if (n < 0) return -1;
+		if (n===0) return 1;
+		return n * this.Factorial (n - 1);
+	}
+
+	// Función de combinación
+	static Comb (n, c){
+		return this.Factorial (n) / (this.Factorial(c) * this.Factorial(n-c));
+	}
 }
 
-// Función de combinación
-function mathComb (n, c){
-	return mathFactorial (n) / (mathFactorial(c) * mathFactorial(n-c));
-}
-
-class Normalizador{
-	var Norm;
-	var CombGeneradas
+class NormalizadorRandom{
 	constructor (norm){
 		this.Norm = norm;
-		CombGeneradas = new Array(norm);
+		this.CombGeneradas = new Array(norm);
 	}
 
 	Inicializar (){
-		for (var i = 0; i <= Norm; i++) {
-			CombGeneradas[i] = mathComb(norm,i);
+		for (var i = 0; i <= this.Norm; i++) {
+			this.CombGeneradas[i] = Combinatoria.Comb(this.Norm, i);
+		}
 	}
 	
 	// Rand normalizado. Devuelve un real esperado expected, con máximo error epsilon
-	RandomNormalizado (expected, epsilon)
-	{
+	RandomNormalizado (expected, epsilon){
 		var r = RandomNormalizado ();
 		return r * (2 * epsilon) + (expected - 0.5);
 	}
@@ -809,13 +809,13 @@ class Normalizador{
 	RandomNormalizado (){
 		var i = 0;
 		var c = 1;
-		var r = Math.random () * Math.pow(2, Norm);
+		var r = Math.random () * Math.pow(2, this.Norm);
 		while (c < r) {
 			r -= c;
 			i++;
-			c = CombGeneradas(i);
+			c = this.CombGeneradas[i];
 		}
 		// i es el intervalo elegido
-		return (i + Math.random ()) / Norm;
+		return (i + Math.random ()) / this.Norm;
 	}
 }
