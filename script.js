@@ -62,6 +62,7 @@ var jugadorConPelota;
 var pelota;
 var ultimoEquipoConPelota;
 var enPartido;
+var Normalizador;
 
 function setup(){
 	createCanvas(WIDTH, HEIGHT);
@@ -77,6 +78,11 @@ function setup(){
 	equipo1.agregarJugador(width*3/5, height/5, {atraccion:50, repulsion:50, punteria:50});
 	equipo1.agregarJugador(width*3/5, height*4/5, {atraccion:50, repulsion:50, punteria:50});
 	textAlign(CENTER, TOP);
+
+	// Inicializar el normalizador
+	Normalizador = new Normalizador(10);
+	Normalizador.Inicializar();
+
 	nuevoPartido()
 }
 
@@ -364,11 +370,7 @@ function apuntarA(x, y){
 }
 
 function soltarPelota(){
-	console.log ("resolviendo ruido de ángulo por punteria");
-	console.log ("ángulo previo " + jugadorConPelota.angulo);
-	console.log ("punteria " + jugadorConPelota.stats.punteria);
-	var nAngulo = mathRandomNormalizadoIntervalo (10, jugadorConPelota.angulo, 1-jugadorConPelota.stats.punteria / 100);
-	console.log ("ángulo con ruido " + nAngulo);
+	var nAngulo = this.Normalizador.RandomNormalizado (jugadorConPelota.angulo, 1-jugadorConPelota.stats.punteria / 100);
 	jugadorConPelota.angulo = nAngulo;
 	pelota.centro={x:jugadorConPelota.centro.x + cos(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2, y:jugadorConPelota.centro.y+sin(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2};
 	jugadorConPelota.multiplicadorDeAtraccion=(0<jugadorConPelota.multiplicadorDeAtraccion?-jugadorConPelota.stats.repulsion:jugadorConPelota.stats.atraccion)/50;
