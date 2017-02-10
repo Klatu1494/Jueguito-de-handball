@@ -205,7 +205,7 @@ function draw(){
 			for(var equipo of equipos) if(equipo.DT==='AI') atraerConTodosLosJugadoresDelEquipo(equipo);
 		}
 		if(!jugadorConPelota){
-			for(equipo of equipos) for(jugador of equipo.jugadores) if(jugador.multiplicadorDeAtraccion>0&&sq(pelota.centro.x-jugador.centro.x)+sq(pelota.centro.y-jugador.centro.y)<sq(jugador.size)) jugadoresDisputandoPelota.push(jugador);
+			for(var equipo of equipos) for(var jugador of equipo.jugadores) if(jugador.multiplicadorDeAtraccion>0&&sq(pelota.centro.x-jugador.centro.x)+sq(pelota.centro.y-jugador.centro.y)<sq(jugador.size)) jugadoresDisputandoPelota.push(jugador);
 			if(jugadoresDisputandoPelota.length){
 				jugadorConPelota=random(jugadoresDisputandoPelota);
 				jugadorConPelota.angulo=atan2(pelota.centro.y-jugadorConPelota.centro.y, pelota.centro.x-jugadorConPelota.centro.x);
@@ -257,9 +257,7 @@ function keyReleased(){
 	for(equipo of equipos){
 		for(var tecla of teclas) if(keyCode===equipo['tecla'+tecla].code) equipo['tecla'+tecla].presionada=false;
 		if(keyCode===equipo.teclaCambiarAtraccion&&equipo.DT==='humano'){
-			if(jugadorConPelota===equipo.jugadorSeleccionado){
-				soltarPelota()
-			}
+			if(jugadorConPelota===equipo.jugadorSeleccionado) soltarPelota();
 			else equipo.jugadorSeleccionado.multiplicadorDeAtraccion=(0<equipo.jugadorSeleccionado.multiplicadorDeAtraccion?-equipo.jugadorSeleccionado.stats.repulsion:equipo.jugadorSeleccionado.stats.atraccion)/50;
 		}
 	}
@@ -364,7 +362,7 @@ function apuntarA(x, y){
 }
 
 function soltarPelota(){
-	var nAngulo = mathRandomNormalizadoIntervalo (50, jugadorConPelota.angulo, 1-jugadorConPelota.punteria /100);
+	var nAngulo = mathRandomNormalizadoIntervalo (50, jugadorConPelota.angulo, 1-jugadorConPelota.stats.punteria/100);
 	jugadorConPelota.angulo = nAngulo;
 	pelota.centro={x:jugadorConPelota.centro.x+cos(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2, y:jugadorConPelota.centro.y+sin(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2};
 	jugadorConPelota.multiplicadorDeAtraccion=(0<jugadorConPelota.multiplicadorDeAtraccion?-jugadorConPelota.stats.repulsion:jugadorConPelota.stats.atraccion)/50;
@@ -776,7 +774,7 @@ function mathFactorial (n){
 
 // Función de combinación
 function mathComb (n, c){
-	return mathFactrial (n) / (mathFactrial(c) * mathfactorial(n-c));
+	return mathFactorial (n) / (mathFactorial(c) * mathFactorial(n-c));
 }
 
 // Acumulación de combinaciones
@@ -793,14 +791,14 @@ function mathRandomNormalizado (norm) {
 	// Seleccionar la pieza
 	var i = 0;
 	var c = 1;
-	var r = Math.random () * Math.pow(2, norm));
+	var r = Math.random () * Math.pow(2, norm);
 	while (c < r) {
 		r -= c;
 		i++;
 		c = mathComb (norm, i);
 	}
 	var piece = i;
-	return (i + Math.random ()) / norm;
+	return (i + Math.random()) / norm;
 }
 
 // Rand normalizado. Devuelve un real esperado expected, con máximo error epsilon
