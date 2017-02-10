@@ -728,3 +728,8 @@ function mathRandomNormalizado (norm) {
 	return (i + Math.random ()) / norm;
 }
 
+// Rand normalizado. Devuelve un real esperado expected, con máximo error epsilon
+function mathRandomNormalizadoIntervalo (norm, expected, epsilon){
+	var r = mathRandomNormalizado (norm);
+	return r * (2 * epsilon) + (expected - 0.5);
+}
