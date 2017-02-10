@@ -691,3 +691,40 @@ function dibujarLineaPunteada(x1, y1, x2, y2){
 	for(i=0; i<lineas; i+=2) line(x1+cos(angulo)*anchoLinea*i, y1+sin(angulo)*anchoLinea*i, x1+cos(angulo)*anchoLinea*(i+1), y1+sin(angulo)*anchoLinea*(i+1));
 	line(x1+cos(angulo)*anchoLinea*i, y1+sin(angulo)*anchoLinea*i, x2, y2);
 }
+
+// Funciónn factorial. Devuelve -1 cuando hay error
+function mathFactorial (n){
+	if (n < 0) return -1;
+	if (n===0) return 1;
+	return n * mathFactorial (n-1);
+}
+
+// Función de combinación
+function mathComb (n, c){
+	return mathFactrial (n) / (mathFactrial(c) * mathfactorial(n-c));
+}
+
+// Acumulación de combinaciones
+function mathCombAcumuldas (n, c){
+	var acc_sum=0;
+	for (i=0; i <=c; i++){
+		acc_sum += mathComb (n,i);
+	}
+	return acc_sum;
+}
+
+// Random normalizado. Devuelve un real en [0,1] normalizado a 0.5
+function mathRandomNormalizado (norm) {
+	// Seleccionar la pieza
+	var i = 0;
+	var c = 1;
+	var r = Math.random () * Math.pow(2, norm));
+	while (c < r) {
+		r -= c;
+		i++;
+		c = mathComb (norm, i);
+	}
+	var piece = i;
+	return (i + Math.random ()) / norm;
+}
+
