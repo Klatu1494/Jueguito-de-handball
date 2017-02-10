@@ -364,7 +364,8 @@ function apuntarA(x, y){
 }
 
 function soltarPelota(){
-	jugadorConPelota.angulo=jugadorConPelota.angulo+(random()*2-1)*(100-jugadorConPelota.stats.punteria)/100;
+	var nAngulo = mathRandomNormalizadoIntervalo (50, jugadorConPelota.angulo, 1-jugadorConPelota.punteria /100);
+	jugadorConPelota.angulo = nAngulo;
 	pelota.centro={x:jugadorConPelota.centro.x+cos(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2, y:jugadorConPelota.centro.y+sin(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2};
 	jugadorConPelota.multiplicadorDeAtraccion=(0<jugadorConPelota.multiplicadorDeAtraccion?-jugadorConPelota.stats.repulsion:jugadorConPelota.stats.atraccion)/50;
 	jugadorConPelota=null;
@@ -764,4 +765,46 @@ function dibujarJugador(equipo, patron, color1, color2, anchoPatron){
 	ctx.beginPath();
 	ctx.ellipse(ladoCanvasDeCamiseta/2, ladoCanvasDeCamiseta/8, ladoCanvasDeCamiseta/8, ladoCanvasDeCamiseta/8, 0, 0, 2*Math.PI);
 	ctx.fill();
+}
+
+// Función factorial. Devuelve -1 cuando hay error
+function mathFactorial (n){
+	if (n < 0) return -1;
+	if (n===0) return 1;
+	return n * mathFactorial (n-1);
+}
+
+// Función de combinación
+function mathComb (n, c){
+	return mathFactrial (n) / (mathFactrial(c) * mathfactorial(n-c));
+}
+
+// Acumulación de combinaciones
+function mathCombAcumuldas (n, c){
+	var acc_sum=0;
+	for (i=0; i <=c; i++){
+		acc_sum += mathComb (n,i);
+	}
+	return acc_sum;
+}
+
+// Random normalizado. Devuelve un real en [0,1] normalizado a 0.5
+function mathRandomNormalizado (norm) {
+	// Seleccionar la pieza
+	var i = 0;
+	var c = 1;
+	var r = Math.random () * Math.pow(2, norm));
+	while (c < r) {
+		r -= c;
+		i++;
+		c = mathComb (norm, i);
+	}
+	var piece = i;
+	return (i + Math.random ()) / norm;
+}
+
+// Rand normalizado. Devuelve un real esperado expected, con máximo error epsilon
+function mathRandomNormalizadoIntervalo (norm, expected, epsilon){
+	var r = mathRandomNormalizado (norm);
+	return r * (2 * epsilon) + (expected - 0.5);
 }
