@@ -1,3 +1,61 @@
 body{
+	width:800px;
+	height:600px;
 	margin:0;
+	text-align:center;
+	overflow: hidden;
+}
+#menu{
+	position:absolute;
+	width:800px;
+	height:600px;
+	top:0;
+	left:0;
+	transition: top 1s linear, left 1s linear;
+}
+#menuPrincipal{
+	position:absolute;
+	width:800px;
+	height:600px;
+	top:0;
+	left:0;
+}
+#quickMatch{
+	position:absolute;
+	top:600px;
+	left:0;
+}
+#titulo{
+	position:relative;
+	font-size:30px;
+	height:35px;
+	line-height:35px;
+	padding:8px;
+	font-family: 'Orbitron', sans-serif;
+	border: 2px solid white;
+}
+#opciones{
+	position:relative;
+	display:inline-flex;
+	flex-direction:column;
+	justify-content:center;
+	align-content:center;
+	height:500px;
+}
+#titulo, #opciones div{
+	display:inline-block;
+	background:#F82F37;
+	color:white;
+	border-radius:6px;
+}
+#opciones div{
+	text-align:center;
+	margin:10px;
+	width:200px;
+	font-family: 'Orbitron', sans-serif;
+	cursor:pointer;
+	border:2px solid white;
+}
+.camiseta{
+	display: none;
 }
