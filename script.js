@@ -799,12 +799,13 @@ class NormalizadorRandom{
 	
 	// Rand normalizado. Devuelve un real esperado expected, con máximo error epsilon
 	RandomNormalizado (expected, epsilon){
-		var r = RandomNormalizado ();
-		return r * (2 * epsilon) + (expected - 0.5);
+		var r = this.RandomNormalizadoUnitario ();
+		var ret = r * (2 * epsilon) + (expected - 0.5); 
+		return ret;
 	}
 
 	// Random normalizado. Devuelve un real en [0,1] normalizado a 0.5
-	RandomNormalizado (){
+	RandomNormalizadoUnitario (){
 		var i = 0;
 		var c = 1;
 		var r = Math.random () * Math.pow(2, this.Norm);
