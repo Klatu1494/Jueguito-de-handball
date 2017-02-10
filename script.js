@@ -367,7 +367,7 @@ function soltarPelota(){
 	console.log ("resolviendo ruido de ángulo por punteria");
 	console.log ("ángulo previo " + jugadorConPelota.angulo);
 	console.log ("punteria " + jugadorConPelota.stats.punteria);
-	var nAngulo = mathRandomNormalizadoIntervalo (1, jugadorConPelota.angulo, 1-jugadorConPelota.stats.punteria / 100);
+	var nAngulo = mathRandomNormalizadoIntervalo (10, jugadorConPelota.angulo, 1-jugadorConPelota.stats.punteria / 100);
 	console.log ("ángulo con ruido " + nAngulo);
 	jugadorConPelota.angulo = nAngulo;
 	pelota.centro={x:jugadorConPelota.centro.x + cos(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2, y:jugadorConPelota.centro.y+sin(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2};
