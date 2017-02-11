@@ -16,10 +16,10 @@ const equiposPredeterminados=[
 			color2:'#003580',
 			arquero:{atraccion:44, repulsion:80, punteria:25},
 			jugadores:[
-				{atraccion:71, repulsion:64, punteria:81},
-				{atraccion:76, repulsion:63, punteria:59},
-				{atraccion:75, repulsion:78, punteria:74},
-				{atraccion:69, repulsion:76, punteria:74}
+				{atraccion:71, repulsion:64, punteria:81, velocidad:100},
+				{atraccion:76, repulsion:63, punteria:59, velocidad:100},
+				{atraccion:75, repulsion:78, punteria:74, velocidad:100},
+				{atraccion:69, repulsion:76, punteria:74, velocidad:100}
 			]
 		},
 		{
@@ -27,10 +27,10 @@ const equiposPredeterminados=[
 			color2:'#ffffff',
 			arquero:{atraccion:44, repulsion:80, punteria:25},
 			jugadores:[
-				{atraccion:71, repulsion:64, punteria:81},
-				{atraccion:76, repulsion:63, punteria:59},
-				{atraccion:75, repulsion:78, punteria:74},
-				{atraccion:69, repulsion:76, punteria:74}
+				{atraccion:71, repulsion:64, punteria:81, velocidad:100},
+				{atraccion:76, repulsion:63, punteria:59, velocidad:100},
+				{atraccion:75, repulsion:78, punteria:74, velocidad:100},
+				{atraccion:69, repulsion:76, punteria:74, velocidad:100}
 			]
 		}
 	]
@@ -69,14 +69,14 @@ function setup(){
 	equipo0=new Equipo('West Ham United F.C.', confirm('¿Desea jugar?')?'humano':'AI', '#fff', 87, 65, 83, 68, 69, 81, 32, 'mayor que', width/2, width*4/5); //#7D2C3B
 	equipo1=new Equipo('Finland', 'AI', '#003580', 73, 74, 75, 76, 79, 85, 13, 'menor que', width/2, width/5);
 	equipos=[equipo0, equipo1];
-	equipo0.agregarJugador(width*2/5, height/5, {atraccion:50, repulsion:50, punteria:50});
-	equipo0.agregarJugador(width*2/5, height*4/5, {atraccion:50, repulsion:50, punteria:50});
-	equipo0.agregarJugador(width/5, height/3, {atraccion:50, repulsion:50, punteria:50});
-	equipo0.agregarJugador(width/5, height*2/3, {atraccion:50, repulsion:50, punteria:50});
-	equipo1.agregarJugador(width*4/5, height/3, {atraccion:50, repulsion:50, punteria:50});
-	equipo1.agregarJugador(width*4/5, height*2/3, {atraccion:50, repulsion:50, punteria:50});
-	equipo1.agregarJugador(width*3/5, height/5, {atraccion:50, repulsion:50, punteria:50});
-	equipo1.agregarJugador(width*3/5, height*4/5, {atraccion:50, repulsion:50, punteria:50});
+	equipo0.agregarJugador(width*2/5, height/5, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
+	equipo0.agregarJugador(width*2/5, height*4/5, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
+	equipo0.agregarJugador(width/5, height/3, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
+	equipo0.agregarJugador(width/5, height*2/3, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
+	equipo1.agregarJugador(width*4/5, height/3, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
+	equipo1.agregarJugador(width*4/5, height*2/3, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
+	equipo1.agregarJugador(width*3/5, height/5, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
+	equipo1.agregarJugador(width*3/5, height*4/5, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
 	textAlign(CENTER, TOP);
 
 	// Inicializar el normalizador
@@ -310,7 +310,7 @@ function moverHacia(jugador, x, y){
 	var vector=new p5.Vector(x-jugador.centro.x, y-jugador.centro.y);
 	var centroPrevio={x:jugador.centro.x, y:jugador.centro.y}
 	vector.normalize();
-	vector.mult(velocidadJugadores);
+	vector.mult(jugador.velocidad);
 	jugador.centro.x=vector.x>0?min(jugador.centro.x+vector.x, x):max(jugador.centro.x+vector.x, x);
 	jugador.centro.y=vector.y>0?min(jugador.centro.y+vector.y, y):max(jugador.centro.y+vector.y, y);
 	for(var equipo of equipos) for(var jugador2 of equipo.jugadores) if(jugador!==jugador2&&dist(jugador.centro.x, jugador.centro.y, jugador2.centro.x, jugador2.centro.y)<sizeJugadores) jugador.centro=centroPrevio;
