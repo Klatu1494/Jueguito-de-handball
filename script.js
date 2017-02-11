@@ -312,7 +312,7 @@ function moverHacia(jugador, x, y){
 	if (vector.x == 0 && vector.y == 0)
 		return;
 	vector.normalize();
-	vector.mult(jugador.velocidad);
+	vector.mult(jugador.stats.velocidad / 100);
 	jugador.centro.x=vector.x>0?min(jugador.centro.x+vector.x, x):max(jugador.centro.x+vector.x, x);
 	jugador.centro.y=vector.y>0?min(jugador.centro.y+vector.y, y):max(jugador.centro.y+vector.y, y);
 	for(var equipo of equipos) for(var jugador2 of equipo.jugadores) if(jugador!==jugador2&&dist(jugador.centro.x, jugador.centro.y, jugador2.centro.x, jugador2.centro.y)<sizeJugadores) jugador.centro=centroPrevio;
@@ -337,8 +337,8 @@ function gol(equipoQueHizoGol){
 	var angulo=random(0, TWO_PI);
 	var radio=random(0, cancha.height/3);
 	pelota={centro:{x:cancha.x+cancha.width/2+cos(angulo)*radio, y:cancha.y+cancha.height/2+sin(angulo)*radio}, velocidad:{x:0, y:0}};
-	equipo0.arquero=new Jugador(equipo0, 'arquero', cancha.x, height/2, {atraccion:50, repulsion:50, punteria:50});
-	equipo1.arquero=new Jugador(equipo1, 'arquero', cancha.x+cancha.width, height/2, {atraccion:50, repulsion:50, punteria:50});
+	equipo0.arquero=new Jugador(equipo0, 'arquero', cancha.x, height/2, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
+	equipo1.arquero=new Jugador(equipo1, 'arquero', cancha.x+cancha.width, height/2, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
 	for(var equipo of equipos) equipo.arquero.multiplicadorDeAtraccion=-equipo.arquero.stats.repulsion/50;
 	if(equipoQueHizoGol){
 		equipoQueHizoGol.goles++;
