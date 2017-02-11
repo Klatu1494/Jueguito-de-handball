@@ -69,14 +69,14 @@ function setup(){
 	equipo0=new Equipo('West Ham United F.C.', confirm('¿Desea jugar?')?'humano':'AI', '#fff', 87, 65, 83, 68, 69, 81, 32, 'mayor que', width/2, width*4/5); //#7D2C3B
 	equipo1=new Equipo('Finland', 'AI', '#003580', 73, 74, 75, 76, 79, 85, 13, 'menor que', width/2, width/5);
 	equipos=[equipo0, equipo1];
-	equipo0.agregarJugador(width*2/5, height/5, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
-	equipo0.agregarJugador(width*2/5, height*4/5, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
+	equipo0.agregarJugador(width*2/5, height/5, {atraccion:50, repulsion:50, punteria:50, velocidad:80});
+	equipo0.agregarJugador(width*2/5, height*4/5, {atraccion:50, repulsion:50, punteria:50, velocidad:90});
 	equipo0.agregarJugador(width/5, height/3, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
-	equipo0.agregarJugador(width/5, height*2/3, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
-	equipo1.agregarJugador(width*4/5, height/3, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
+	equipo0.agregarJugador(width/5, height*2/3, {atraccion:50, repulsion:50, punteria:50, velocidad:110});
+	equipo1.agregarJugador(width*4/5, height/3, {atraccion:50, repulsion:50, punteria:50, velocidad:80});
 	equipo1.agregarJugador(width*4/5, height*2/3, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
-	equipo1.agregarJugador(width*3/5, height/5, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
-	equipo1.agregarJugador(width*3/5, height*4/5, {atraccion:50, repulsion:50, punteria:50, velocidad:100});
+	equipo1.agregarJugador(width*3/5, height/5, {atraccion:50, repulsion:50, punteria:50, velocidad:110});
+	equipo1.agregarJugador(width*3/5, height*4/5, {atraccion:50, repulsion:50, punteria:50, velocidad:90});
 	textAlign(CENTER, TOP);
 
 	// Inicializar el normalizador
