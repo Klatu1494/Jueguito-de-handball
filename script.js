@@ -365,7 +365,7 @@ function nuevoPartido(humanos){
 		equipo0.agregarJugador(cancha.x+jugador.x, cancha.y+jugador.y, {atraccion:jugador.atraccion, repulsion:jugador.repulsion, punteria:jugador.punteria});
 	}
 	for(var jugador of equipo1Seleccion.jugadores){
-		equipo1.agregarJugador(cancha.y+cancha.height-jugador.x, cancha.y+cancha.height-jugador.y, {atraccion:jugador.atraccion, repulsion:jugador.repulsion, punteria:jugador.punteria});
+		equipo1.agregarJugador(cancha.y+cancha.width-jugador.x, cancha.y+cancha.height-jugador.y, {atraccion:jugador.atraccion, repulsion:jugador.repulsion, punteria:jugador.punteria});
 	}
 	for(equipo of equipos) equipo.goles=0;
 	gol(false);
