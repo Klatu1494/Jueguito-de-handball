@@ -181,9 +181,9 @@ function draw(){
 				var x;
 				var y;
 				if(vector.x===0){
-					x=jugador.centro.x;
-					dX=x-jugador2.centro.x;
-					y=sqrt(sq(sizeJugadores)-sq(dX));
+					x=pelota.centro.x;
+					var dX=x-palo.x;
+					y=palo.y-sqrt(sq(sizePelota/2+sizePalos/2)-sq(dX));
 				}
 				var pendiente=vector.y/vector.x;
 				var terminoIndependiente=-pendiente*pelota.centro.x+pelota.centro.y;
@@ -335,8 +335,8 @@ function moverHacia(jugador, x, y){
 		var yIntermedia;
 		if(vector.x===0){
 			xIntermedia=jugador.centro.x;
-			dX=xIntermedia-jugador2.centro.x;
-			yIntermedia=jugador2.centro.y+sqrt(sq(sizeJugadores)-sq(dX));
+			var dX=jugador.centro.x-jugador2.centro.x;
+			yIntermedia=jugador2.centro.y-vector.y*sqrt(sq(jugador.size/2+jugador2.size/2)-sq(dX))/abs(vector.y);
 		}
 		else{
 			var pendiente=vector.y/vector.x;
