@@ -2,11 +2,41 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+	<link href="lib/bxslider/bxslider.css" rel="stylesheet" />
 	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/p5.min.js"></script>
+	<script src="lib/bxslider/bxslider.min.js"></script>
 	<script type="text/javascript" src="script.js"></script>
 </head>
 <body>
-
+	<div id='menu'>
+		<div id='menuPrincipal'>
+			<div id='titulo'>Magnetic Soccer</div>
+			<br>
+			<div id='opciones'>
+				<div>Carreer</div>
+				<div onclick="moverMenuA(0, HEIGHT); en='seleccionDeEquipos'; equipo0Seleccion=equiposPredeterminados[0][0]; camiseta0=camiseta1=1;">Quick match</div>
+				<div>Configure keys</div>
+			</div>
+		</div>
+		<div id='quickMatchSeleccionDeEquipo0' class="quickMatchSeleccionDeEquipo">
+			<div class='boton' onclick="moverMenuA(0, 0);">Go back</div>
+			<div class="containerSeleccionDeEquipo">
+				<ul id='slider0' class="bxslider"></ul>
+			</div>
+			<div class='boton' onclick="moverMenuA(0, HEIGHT*2); equipo1Seleccion=(equipo0Seleccion===equiposPredeterminados[0][0]?equiposPredeterminados[0][1]:equiposPredeterminados[0][0]); actualizarSlider1(); $('#slider1').bxSlider({pager: false, onSlideAfter: cambiarEquipo1});">Next</div>
+		</div>
+		<div id='quickMatchSeleccionDeEquipo1' class="quickMatchSeleccionDeEquipo">
+			<div class='boton' onclick="moverMenuA(0, HEIGHT);">Go back</div>
+			<div class="containerSeleccionDeEquipo">
+				<ul id='slider1' class="bxslider"></ul>
+			</div>
+			<div class='boton' onclick="nuevoPartido(true); document.getElementById('menu').style.display='none';dibujarJugadores();">Next</div>
+		</div>
+    </div>
+<canvas id='jugador0' class='jugador' width="35" height="35"></canvas>
+<canvas id='jugador1' class='jugador' width="35" height="35"></canvas>
 </body>
 </html>

@@ -1,3 +1,100 @@
 body{
+	width:800px;
+	height:600px;
 	margin:0;
+	text-align:center;
+	overflow: hidden;
+}
+#menu{
+	position:absolute;
+	width:800px;
+	height:600px;
+	top:0;
+	left:0;
+	transition: top 0.75s linear, left 0.75s linear;
+}
+#menuPrincipal{
+	position:absolute;
+	width:800px;
+	height:600px;
+	top:0;
+	left:0;
+}
+.quickMatchSeleccionDeEquipo>div{
+	background: rgba(0, 0, 0, 0.8);
+	border-radius: 6px;
+	border:2px solid white;
+}
+#titulo{
+	position:relative;
+	font-size:30px;
+	height:35px;
+	line-height:35px;
+	padding:8px;
+	font-family: 'Orbitron', sans-serif;
+	border: 2px solid white;
+}
+#opciones{
+	position:relative;
+	display:inline-flex;
+	flex-direction:column;
+	justify-content:center;
+	height:500px;
+}
+#titulo, #opciones div{
+	display:inline-block;
+	background:#F82F37;
+	color:white;
+	border-radius:6px;
+}
+#opciones div{
+	text-align:center;
+	margin:10px;
+	width:200px;
+	font-family: 'Orbitron', sans-serif;
+	cursor:pointer;
+	border:2px solid white;
+}
+.jugador{
+	display: none;
+}
+.quickMatchSeleccionDeEquipo{
+	width:800px;
+	height:600px;
+	position:absolute;
+	left:0;
+	display: flex;
+	justify-content:center;
+	align-content:center;
+	flex-direction:column;
+}
+#quickMatchSeleccionDeEquipo0{
+	top:600px;
+}
+#quickMatchSeleccionDeEquipo1{
+	top:1200px;
+}
+.bxslider>li>div{
+	width:100%;
+	font-family: 'Orbitron', sans-serif;
+	padding:10px;
+	color:white;
+}
+.containerSeleccionDeEquipo{
+	width:400px;
+	height:300px;
+	margin: 20px auto;
+}
+.boton{
+	width:150px;
+	height:50px;
+	line-height: 50px;
+	margin: 0 auto;
+	color:white;
+	font-family: 'Orbitron', sans-serif;
+	font-size: 30px;
+	border-radius:6px;
+	background:#A6D785;
+	border:2px solid white;
+	cursor:pointer;
 }
