@@ -557,12 +557,15 @@ function despejar(equipoRival){
 		var a1=(atan2(equipoRival.jugadores[i].centro.y-jugadorConPelota.centro.y, equipoRival.jugadores[i].centro.x-jugadorConPelota.centro.x)+TWO_PI)%TWO_PI;
 		var a2=(atan2(equipoRival.jugadores[(i+1)%equipoRival.jugadores.length].centro.y-jugadorConPelota.centro.y, equipoRival.jugadores[(i+1)%equipoRival.jugadores.length].centro.x-jugadorConPelota.centro.x)+TWO_PI)%TWO_PI;
 		var d=(a2-a1+TWO_PI)%TWO_PI;
-		if(diferencia<d){
-			angulos=[];
-			diferencia=d;
-		}
-		if(d===diferencia){
-			angulos.push((a1+a2+TWO_PI)/2);
+		var angulo=(a1+a2)/2;
+		if(equipoRival===equipo0&&HALF_PI<=angulo&&angulo<=HALF_PI*3||equipoRival===equipo1&&(angulo<=HALF_PI||HALF_PI*3<=angulo)){
+			if(diferencia<d){
+				angulos=[];
+				diferencia=d;
+			}
+			if(d===diferencia){
+				angulos.push(angulo);
+			}
 		}
 	}
 	angulo=random(angulos);
