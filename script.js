@@ -164,14 +164,14 @@ function draw(){
 				}
 				else moverHacia(jugador, equipo.centro.x+jugador.posicionEnFormacion.x, equipo.centro.y+jugador.posicionEnFormacion.y);
 				fill(jugador.multiplicadorDeAtraccion>0?'#f00':'#0ff');
-				ellipse(jugador.centro.x, jugador.centro.y+jugador.size/4, jugador.size, jugador.size/2);
-				canvas.getContext('2d').drawImage($('#jugador'+(jugador.equipo===equipo0?0:1))[0], jugador.centro.x-sizeJugadores/2, jugador.centro.y-sizeJugadores/2);
+				ellipse(jugador.centro.x, jugador.centro.y+jugador.size/2, jugador.size, jugador.size/2);
 			}
 			pelota.velocidad.x+=g*equipo.arquero.multiplicadorDeAtraccion*cos(atan2(equipo.arquero.centro.y-pelota.centro.y, equipo.arquero.centro.x-pelota.centro.x))/(sq(pelota.centro.x-equipo.arquero.centro.x)+sq(pelota.centro.y-equipo.arquero.centro.y));
 			pelota.velocidad.y+=g*equipo.arquero.multiplicadorDeAtraccion*sin(atan2(equipo.arquero.centro.y-pelota.centro.y, equipo.arquero.centro.x-pelota.centro.x))/(sq(pelota.centro.x-equipo.arquero.centro.x)+sq(pelota.centro.y-equipo.arquero.centro.y));
 			moverHacia(equipo.arquero, equipo.arquero.centro.x, constrain(pelota.centro.y, topArcos+sizePalos/2+equipo.arquero.size/2+sizePelota, bottomArcos-sizePalos/2-equipo.arquero.size/2-sizePelota));
 			fill(equipo.arquero.multiplicadorDeAtraccion>0?'#f00':'#0ff');
-			ellipse(equipo.arquero.centro.x, equipo.arquero.centro.y+equipo.arquero.size/4, equipo.arquero.size, equipo.arquero.size/2);
+			ellipse(equipo.arquero.centro.x, equipo.arquero.centro.y+equipo.arquero.size/2, equipo.arquero.size, equipo.arquero.size/2);
+			for(var jugador of equipo.jugadores) canvas.getContext('2d').drawImage($('#jugador'+(jugador.equipo===equipo0?0:1))[0], jugador.centro.x-sizeJugadores/2, jugador.centro.y-sizeJugadores/2);
 			canvas.getContext('2d').drawImage($('#jugador'+(equipo===equipo0?0:1))[0], equipo.arquero.centro.x-sizeJugadores/2, equipo.arquero.centro.y-sizeJugadores/2);
 		}
 		fill('#1c1a1a')
@@ -217,14 +217,14 @@ function draw(){
 		pelota.centro.y+=pelota.velocidad.y;
 		if(pelota.centro.y<cancha.y+sizePelota/2){
 			pelota.centro.y=cancha.y+sizePelota/2;
-			pelota.velocidad.x*=1.15;
-			pelota.velocidad.y*=-1.15;
+			pelota.velocidad.x*=1;
+			pelota.velocidad.y*=-1;
 			for(var equipo of equipos) if(equipo.DT==='AI') atraerConTodosLosJugadoresDelEquipo(equipo);
 		}
 		if(pelota.centro.y>cancha.y+cancha.height-sizePelota/2){
 			pelota.centro.y=cancha.y+cancha.height-sizePelota/2;
-			pelota.velocidad.x*=1.15;
-			pelota.velocidad.y*=-1.15;
+			pelota.velocidad.x*=1;
+			pelota.velocidad.y*=-1;
 			for(var equipo of equipos) if(equipo.DT==='AI') atraerConTodosLosJugadoresDelEquipo(equipo);
 		}
 		if(!jugadorConPelota){
@@ -248,8 +248,8 @@ function draw(){
 			if(height/3<pelota.centro.y&&pelota.centro.y<height*2/3) gol(equipo0);
 			else{
 				pelota.centro.x=cancha.x+cancha.width+sizePelota/2;
-				pelota.velocidad.x*=-1.15;
-				pelota.velocidad.y*=1.15;
+				pelota.velocidad.x*=-1;
+				pelota.velocidad.y*=1;
 				for(var equipo of equipos) if(equipo.DT==='AI') atraerConTodosLosJugadoresDelEquipo(equipo);
 			}
 		}
@@ -257,8 +257,8 @@ function draw(){
 			if(height/3<pelota.centro.y&&pelota.centro.y<height*2/3) gol(equipo1);
 			else{
 				pelota.centro.x=cancha.x-sizePelota/2;
-				pelota.velocidad.x*=-1.15;
-				pelota.velocidad.y*=1.15;
+				pelota.velocidad.x*=-1;
+				pelota.velocidad.y*=1;
 				for(var equipo of equipos) if(equipo.DT==='AI') atraerConTodosLosJugadoresDelEquipo(equipo);
 			}
 		}
@@ -336,7 +336,7 @@ function moverHacia(jugador, x, y){
 		if(vector.x===0){
 			xIntermedia=jugador.centro.x;
 			dX=xIntermedia-jugador2.centro.x;
-			yIntermedia=sqrt(sq(sizeJugadores)-sq(dX));
+			yIntermedia=jugador2.centro.y+sqrt(sq(sizeJugadores)-sq(dX));
 		}
 		else{
 			var pendiente=vector.y/vector.x;
@@ -356,16 +356,17 @@ function moverHacia(jugador, x, y){
 				yIntermedia=pendiente*xIntermedia+terminoIndependiente;
 			}
 		}
-		jugador.centro={x:xIntermedia, y:yIntermedia};/*
+		jugador.centro={x:xIntermedia, y:yIntermedia};
 		if(jugador2.stats.fuerza<jugador.stats.fuerza){
 			var vectorDesplazamiento=new p5.Vector(jugador.centro.x-centroPrevio.x, jugador.centro.y-centroPrevio.y);
 			desplazamientoEvitado=velocidadJugadores-vectorDesplazamiento.mag();
-			vectorDesplazamiento.mult(Math.min(jugador.stats.fuerza/jugador2.stats.fuerza-1, 1)*desplazamientoEvitado);
-			jugador.centro.x=vectorDesplazamiento.x>0?min(jugador.centro.x+vectorDesplazamiento.x, x):max(jugador.centro.x+vectorDesplazamiento.x, x);
-			jugador.centro.y=vectorDesplazamiento.y>0?min(jugador.centro.y+vectorDesplazamiento.y, y):max(jugador.centro.y+vectorDesplazamiento.y, y);
+			vector.normalize();
+			vector.mult(Math.min(jugador.stats.fuerza/jugador2.stats.fuerza-1, 1)*desplazamientoEvitado);
+			jugador.centro.x=vector.x>0?min(jugador.centro.x+vector.x, x):max(jugador.centro.x+vector.x, x);
+			jugador.centro.y=vector.y>0?min(jugador.centro.y+vector.y, y):max(jugador.centro.y+vector.y, y);
 			jugador2.centro.x+=jugador.centro.x-centroPrevio.x;
 			jugador2.centro.y+=jugador.centro.y-centroPrevio.y;
-		}*/
+		}
 	}
 }
 
@@ -817,25 +818,25 @@ function dibujarJugador(canvas, ladoCanvas, color1, patron, color2, anchoPatron)
 	var ctx=canvas.getContext('2d');
 	ctx.clearRect(0, 0, ladoCanvas, ladoCanvas);
 	ctx.fillStyle=color1;
-	ctx.fillRect(ladoCanvas/4, ladoCanvas*5/12, ladoCanvas/2, sqrt(sq(ladoCanvas/2)-sq(ladoCanvas/4)));
+	ctx.fillRect(ladoCanvas/4, ladoCanvas/2, ladoCanvas/2, ladoCanvas/2);
 	ctx.beginPath();
-	ctx.ellipse(ladoCanvas/2, ladoCanvas*5/12, ladoCanvas/4, ladoCanvas/6, 0, 0, 2*Math.PI);
+	ctx.ellipse(ladoCanvas/2, ladoCanvas/2, ladoCanvas/4, ladoCanvas/6, 0, 0, 2*Math.PI);
 	ctx.fill();
 	ctx.globalCompositeOperation='source-atop';
 	ctx.fillStyle=color2;
 	switch(patron){
 		case 'diagonal':
 			ctx.translate(0, -anchoPatron/2);
-			ctx.rotate(Math.PI/4);
+			ctx.rotate(Math.PI*4/15);
 			ctx.fillRect(0, 0, Math.sqrt(2)*ladoCanvas, anchoPatron);
-			ctx.rotate(-Math.PI/4);
+			ctx.rotate(-Math.PI*4/15);
 			ctx.translate(0, anchoPatron/2);
 			break;
 		case 'diagonal invertido':
 			ctx.translate(ladoCanvas, -anchoPatron/2);
-			ctx.rotate(-Math.PI/4);
+			ctx.rotate(-Math.PI*4/15);
 			ctx.fillRect(0, 0, -Math.sqrt(2)*ladoCanvas, anchoPatron);
-			ctx.rotate(Math.PI/4);
+			ctx.rotate(Math.PI*4/15);
 			ctx.translate(-ladoCanvas, anchoPatron/2);
 			break;
 		case 'horizontal':
@@ -847,7 +848,7 @@ function dibujarJugador(canvas, ladoCanvas, color1, patron, color2, anchoPatron)
 	ctx.globalCompositeOperation='source-over';
 	ctx.fillStyle=colorPiel;
 	ctx.beginPath();
-	ctx.ellipse(ladoCanvas/2, ladoCanvas/8, ladoCanvas/8, ladoCanvas/8, 0, 0, 2*Math.PI);
+	ctx.ellipse(ladoCanvas/2, ladoCanvas/6, ladoCanvas/6, ladoCanvas/6, 0, 0, 2*Math.PI);
 	ctx.fill();
 }
 
