@@ -1,6 +1,6 @@
 const WIDTH=800;
 const HEIGHT=600;
-const g=500;
+const g=450;
 const sizePelota=15;
 const sizePalos=20;
 const sizeJugadores=35;
@@ -32,10 +32,10 @@ const equiposPredeterminados=[
 			anchoPatron:5,
 			arquero:{atraccion:44, repulsion:80, punteria:25},
 			jugadores:[
-				{atraccion:71, repulsion:64, punteria:81, x:cancha.width/5, y:cancha.height/3},
-				{atraccion:76, repulsion:63, punteria:59, x:cancha.width/5, y:cancha.height*2/3},
-				{atraccion:75, repulsion:78, punteria:74, x:cancha.width*2/5, y:cancha.height/5},
-				{atraccion:69, repulsion:76, punteria:74, x:cancha.width*2/5, y:cancha.height*4/5}
+				{stats:{atraccion:71, repulsion:64, punteria:81, fuerza:50}, x:cancha.width/5, y:cancha.height/3},
+				{stats:{atraccion:76, repulsion:63, punteria:59, fuerza:50}, x:cancha.width/5, y:cancha.height*2/3},
+				{stats:{atraccion:75, repulsion:78, punteria:74, fuerza:50}, x:cancha.width*2/5, y:cancha.height/5},
+				{stats:{atraccion:69, repulsion:76, punteria:74, fuerza:50}, x:cancha.width*2/5, y:cancha.height*4/5}
 			]
 		},
 		{
@@ -46,10 +46,10 @@ const equiposPredeterminados=[
 			anchoPatron:8,
 			arquero:{atraccion:36, repulsion:65, punteria:31},
 			jugadores:[
-				{atraccion:64, repulsion:62, punteria:62, x:cancha.width/5, y:cancha.height/3},
-				{atraccion:60, repulsion:70, punteria:59, x:cancha.width/5, y:cancha.height*2/3},
-				{atraccion:61, repulsion:67, punteria:60, x:cancha.width*2/5, y:cancha.height/5},
-				{atraccion:69, repulsion:68, punteria:64, x:cancha.width*2/5, y:cancha.height*4/5}
+				{stats:{atraccion:64, repulsion:62, punteria:62, fuerza:60}, x:cancha.width/5, y:cancha.height/3},
+				{stats:{atraccion:60, repulsion:70, punteria:59, fuerza:60}, x:cancha.width/5, y:cancha.height*2/3},
+				{stats:{atraccion:61, repulsion:67, punteria:60, fuerza:60}, x:cancha.width*2/5, y:cancha.height/5},
+				{stats:{atraccion:69, repulsion:68, punteria:64, fuerza:60}, x:cancha.width*2/5, y:cancha.height*4/5}
 			]
 		},
 		{
@@ -58,10 +58,10 @@ const equiposPredeterminados=[
 			color2:'#0000ff',
 			arquero:{atraccion:31, repulsion:64, punteria:5},
 			jugadores:[
-				{atraccion:68, repulsion:69, punteria:70, x:cancha.width/5, y:cancha.height/3},
-				{atraccion:62, repulsion:63, punteria:66, x:cancha.width/5, y:cancha.height*2/3},
-				{atraccion:67, repulsion:65, punteria:65, x:cancha.width*2/5, y:cancha.height/5},
-				{atraccion:65, repulsion:59, punteria:64, x:cancha.width*2/5, y:cancha.height*4/5}
+				{stats:{atraccion:68, repulsion:69, punteria:70, fuerza:50}, x:cancha.width/5, y:cancha.height/3},
+				{stats:{atraccion:62, repulsion:63, punteria:66, fuerza:50}, x:cancha.width/5, y:cancha.height*2/3},
+				{stats:{atraccion:67, repulsion:65, punteria:65, fuerza:50}, x:cancha.width*2/5, y:cancha.height/5},
+				{stats:{atraccion:65, repulsion:59, punteria:64, fuerza:50}, x:cancha.width*2/5, y:cancha.height*4/5}
 			]
 		},
 		{
@@ -70,10 +70,10 @@ const equiposPredeterminados=[
 			color2:'#008800',
 			arquero:{atraccion:13, repulsion:71, punteria:1},
 			jugadores:[
-				{atraccion:71, repulsion:60, punteria:70, x:cancha.width/5, y:cancha.height/3},
-				{atraccion:69, repulsion:61, punteria:66, x:cancha.width/5, y:cancha.height*2/3},
-				{atraccion:64, repulsion:66, punteria:63, x:cancha.width*2/5, y:cancha.height/5},
-				{atraccion:67, repulsion:69, punteria:68, x:cancha.width*2/5, y:cancha.height*4/5}
+				{stats:{atraccion:71, repulsion:60, punteria:70, fuerza:50}, x:cancha.width/5, y:cancha.height/3},
+				{stats:{atraccion:69, repulsion:61, punteria:66, fuerza:50}, x:cancha.width/5, y:cancha.height*2/3},
+				{stats:{atraccion:64, repulsion:66, punteria:63, fuerza:50}, x:cancha.width*2/5, y:cancha.height/5},
+				{stats:{atraccion:67, repulsion:69, punteria:68, fuerza:50}, x:cancha.width*2/5, y:cancha.height*4/5}
 			]
 		}
 	]
@@ -178,6 +178,13 @@ function draw(){
 		for(var palo of cancha.palos){
 			if(sq(pelota.centro.x-palo.x)+sq(pelota.centro.y-palo.y)<=sq(sizePelota/2+sizePalos/2)){
 				vector=new p5.Vector(pelota.velocidad.x, pelota.velocidad.y);
+				var x;
+				var y;
+				if(vector.x===0){
+					x=jugador.centro.x;
+					dX=x-jugador2.centro.x;
+					y=sqrt(sq(sizeJugadores)-sq(dX));
+				}
 				var pendiente=vector.y/vector.x;
 				var terminoIndependiente=-pendiente*pelota.centro.x+pelota.centro.y;
 				var a=sq(pendiente)+1;
@@ -186,8 +193,6 @@ function draw(){
 				//aplico la fórmula resolvente
 				var x1=(-b+sqrt(sq(b)-4*a*c))/2/a;
 				var x2=(-b-sqrt(sq(b)-4*a*c))/2/a;
-				var x;
-				var y;
 				if(vector.x<0){
 					x=max(x1, x2);
 					y=pendiente*x+terminoIndependiente;
@@ -195,30 +200,6 @@ function draw(){
 				else if(vector.x>0){
 					x=min(x1, x2);
 					y=pendiente*x+terminoIndependiente;
-				}
-				else if(vector.x===0){
-					y1=pendiente*x1+terminoIndependiente;
-					y2=pendiente*x2+terminoIndependiente;
-					if(vector.y<0){
-						if(y1<y2){
-							x=x2;
-							y=y2;
-						}
-						else{
-							x=x1;
-							y=y1;
-						}
-					}
-					else{
-						if(y1<y2){
-							x=x1;
-							y=y1;
-						}
-						else{
-							x=x2;
-							y=y2;
-						}
-					}
 				}
 				pelota.centro={x:x, y:y};
 				//calculo la nueva dirección de la pelota
@@ -343,12 +324,49 @@ function moverHacia(jugador, x, y){
 	if(y>cancha.y+cancha.height-jugador.size/2-cancha.margen) y=cancha.y+cancha.height-jugador.size/2-cancha.margen;
 	if(ultimoEquipoConPelota===jugador.equipo&&ultimoEquipoConPelota.DT==='AI'&&(jugador.equipo===equipo0?x<jugador.centro.x:x>jugador.centro.x)) x=jugador.centro.x;
 	var vector=new p5.Vector(x-jugador.centro.x, y-jugador.centro.y);
+	if(vector.mag()===0) return;
 	var centroPrevio={x:jugador.centro.x, y:jugador.centro.y}
 	vector.normalize();
 	vector.mult(velocidadJugadores);
 	jugador.centro.x=vector.x>0?min(jugador.centro.x+vector.x, x):max(jugador.centro.x+vector.x, x);
 	jugador.centro.y=vector.y>0?min(jugador.centro.y+vector.y, y):max(jugador.centro.y+vector.y, y);
-	for(var equipo of equipos) for(var jugador2 of equipo.jugadores) if(jugador!==jugador2&&dist(jugador.centro.x, jugador.centro.y, jugador2.centro.x, jugador2.centro.y)<sizeJugadores) jugador.centro=centroPrevio;
+	for(var equipo of equipos) for(var jugador2 of equipo.jugadores) if(jugador!==jugador2&&dist(jugador.centro.x, jugador.centro.y, jugador2.centro.x, jugador2.centro.y)<sizeJugadores){
+		var xIntermedia;
+		var yIntermedia;
+		if(vector.x===0){
+			xIntermedia=jugador.centro.x;
+			dX=xIntermedia-jugador2.centro.x;
+			yIntermedia=sqrt(sq(sizeJugadores)-sq(dX));
+		}
+		else{
+			var pendiente=vector.y/vector.x;
+			var terminoIndependiente=-pendiente*jugador.centro.x+jugador.centro.y;
+			var a=sq(pendiente)+1;
+			var b=2*((terminoIndependiente-jugador2.centro.y)*pendiente-jugador2.centro.x);
+			var c=sq(terminoIndependiente-jugador2.centro.y)+sq(jugador2.centro.x)-sq(sizeJugadores);
+			//aplico la fórmula resolvente
+			var x1=(-b+sqrt(sq(b)-4*a*c))/2/a;
+			var x2=(-b-sqrt(sq(b)-4*a*c))/2/a;
+			if(vector.x<0){
+				xIntermedia=max(x1, x2);
+				yIntermedia=pendiente*xIntermedia+terminoIndependiente;
+			}
+			else{
+				xIntermedia=min(x1, x2);
+				yIntermedia=pendiente*xIntermedia+terminoIndependiente;
+			}
+		}
+		jugador.centro={x:xIntermedia, y:yIntermedia};/*
+		if(jugador2.stats.fuerza<jugador.stats.fuerza){
+			var vectorDesplazamiento=new p5.Vector(jugador.centro.x-centroPrevio.x, jugador.centro.y-centroPrevio.y);
+			desplazamientoEvitado=velocidadJugadores-vectorDesplazamiento.mag();
+			vectorDesplazamiento.mult(Math.min(jugador.stats.fuerza/jugador2.stats.fuerza-1, 1)*desplazamientoEvitado);
+			jugador.centro.x=vectorDesplazamiento.x>0?min(jugador.centro.x+vectorDesplazamiento.x, x):max(jugador.centro.x+vectorDesplazamiento.x, x);
+			jugador.centro.y=vectorDesplazamiento.y>0?min(jugador.centro.y+vectorDesplazamiento.y, y):max(jugador.centro.y+vectorDesplazamiento.y, y);
+			jugador2.centro.x+=jugador.centro.x-centroPrevio.x;
+			jugador2.centro.y+=jugador.centro.y-centroPrevio.y;
+		}*/
+	}
 }
 
 function nuevoPartido(humanos){
@@ -362,10 +380,18 @@ function nuevoPartido(humanos){
 	equipo1=new Equipo(equipo0Seleccion.nombre, alMenosUnHumano&&confirm('¿Con un/a amigo/a?')?'humano':'AI', 73, 74, 75, 76, 79, 85, 13, 'menor que', width/2, width/5);
 	equipos=[equipo0, equipo1];
 	for(var jugador of equipo0Seleccion.jugadores){
-		equipo0.agregarJugador(cancha.x+jugador.x, cancha.y+jugador.y, {atraccion:jugador.atraccion, repulsion:jugador.repulsion, punteria:jugador.punteria});
+		var stats={};
+		for(var stat in jugador.stats){
+			stats[stat]=jugador.stats[stat];
+		}
+		equipo0.agregarJugador(cancha.x+jugador.x, cancha.y+jugador.y, stats);
 	}
 	for(var jugador of equipo1Seleccion.jugadores){
-		equipo1.agregarJugador(cancha.y+cancha.width-jugador.x, cancha.y+cancha.height-jugador.y, {atraccion:jugador.atraccion, repulsion:jugador.repulsion, punteria:jugador.punteria});
+		var stats={};
+		for(var stat in jugador.stats){
+			stats[stat]=jugador.stats[stat];
+		}
+		equipo1.agregarJugador(cancha.y+cancha.width-jugador.x, cancha.y+cancha.height-jugador.y, stats);
 	}
 	for(equipo of equipos) equipo.goles=0;
 	gol(false);
@@ -376,7 +402,7 @@ function nuevoPartido(humanos){
 function gol(equipoQueHizoGol){
 	for(equipo of equipos){
 		equipo.centro={x:0, y:0};
-		for(jugador of equipo.jugadores){
+		for(var jugador of equipo.jugadores){
 			jugador.centro=Object.assign({}, jugador.posicionEnFormacion);
 			jugador.multiplicadorDeAtraccion=jugador.stats.atraccion/50;
 		}
@@ -892,13 +918,13 @@ function actualizarSlider1(){
 		canvas.innerText='Your browser doens\'t support canvas elements.';
 		canvas.width=200;
 		canvas.height=200;
-		dibujarJugador(canvas, 200, equipo.color1, equipo.patron, equipo.color2, equipo.anchoPatron);
+		dibujarJugador(canvas, 200, equipo.color1, equipo.patron, equipo.color2, equipo.anchoPatron*200/sizeJugadores);
 		li.appendChild(canvas);
 		var canvas=document.createElement('canvas');
 		canvas.innerText='Your browser doens\'t support canvas elements.';
 		canvas.width=200;
 		canvas.height=200;
-		dibujarJugador(canvas, 200, equipo.color2, equipo.patron, equipo.color1, equipo.anchoPatron);
+		dibujarJugador(canvas, 200, equipo.color2, equipo.patron, equipo.color1, equipo.anchoPatron*200/sizeJugadores);
 		li.appendChild(canvas);
 		document.getElementById('slider1').appendChild(li);
 	}

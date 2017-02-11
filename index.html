@@ -22,16 +22,18 @@
 			</div>
 		</div>
 		<div id='quickMatchSeleccionDeEquipo0' class="quickMatchSeleccionDeEquipo">
+			<div class='boton' onclick="moverMenuA(0, 0);">Go back</div>
 			<div class="containerSeleccionDeEquipo">
 				<ul id='slider0' class="bxslider"></ul>
 			</div>
-			<div class='aceptar' onclick="moverMenuA(0, HEIGHT*2); equipo1Seleccion=(equipo0Seleccion===equiposPredeterminados[0][0]?equiposPredeterminados[0][1]:equiposPredeterminados[0][0]); actualizarSlider1(); $('#slider1').bxSlider({pager: false, onSlideAfter: cambiarEquipo1});">Next</div>
+			<div class='boton' onclick="moverMenuA(0, HEIGHT*2); equipo1Seleccion=(equipo0Seleccion===equiposPredeterminados[0][0]?equiposPredeterminados[0][1]:equiposPredeterminados[0][0]); actualizarSlider1(); $('#slider1').bxSlider({pager: false, onSlideAfter: cambiarEquipo1});">Next</div>
 		</div>
 		<div id='quickMatchSeleccionDeEquipo1' class="quickMatchSeleccionDeEquipo">
+			<div class='boton' onclick="moverMenuA(0, HEIGHT);">Go back</div>
 			<div class="containerSeleccionDeEquipo">
 				<ul id='slider1' class="bxslider"></ul>
 			</div>
-			<div class='aceptar' onclick="nuevoPartido(true); document.getElementById('menu').style.display='none';dibujarJugadores();">Next</div>
+			<div class='boton' onclick="nuevoPartido(true); document.getElementById('menu').style.display='none';dibujarJugadores();">Next</div>
 		</div>
     </div>
 <canvas id='jugador0' class='jugador' width="35" height="35"></canvas>
