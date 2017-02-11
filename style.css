@@ -20,10 +20,10 @@ body{
 	top:0;
 	left:0;
 }
-#quickMatch{
-	position:absolute;
-	top:600px;
-	left:0;
+.quickMatchSeleccionDeEquipo>div{
+	background: rgba(0, 0, 0, 0.8);
+	border-radius: 6px;
+	border:2px solid white;
 }
 #titulo{
 	position:relative;
@@ -39,7 +39,6 @@ body{
 	display:inline-flex;
 	flex-direction:column;
 	justify-content:center;
-	align-content:center;
 	height:500px;
 }
 #titulo, #opciones div{
@@ -56,6 +55,46 @@ body{
 	cursor:pointer;
 	border:2px solid white;
 }
-.camiseta{
+.jugador{
 	display: none;
+}
+.quickMatchSeleccionDeEquipo{
+	width:800px;
+	height:600px;
+	position:absolute;
+	left:0;
+	display: flex;
+	justify-content:center;
+	align-content:center;
+	flex-direction:column;
+}
+#quickMatchSeleccionDeEquipo0{
+	top:600px;
+}
+#quickMatchSeleccionDeEquipo1{
+	top:1200px;
+}
+.bxslider>li>div{
+	width:100%;
+	font-family: 'Orbitron', sans-serif;
+	padding:10px;
+	color:white;
+}
+.containerSeleccionDeEquipo{
+	width:400px;
+	height:300px;
+	margin: 20px auto;
+}
+.aceptar{
+	width:150px;
+	height:50px;
+	line-height: 50px;
+	margin: 0 auto;
+	color:white;
+	font-family: 'Orbitron', sans-serif;
+	font-size: 30px;
+	border-radius:6px;
+	background:#A6D785;
+	border:2px solid white;
+	cursor:pointer;
 }
