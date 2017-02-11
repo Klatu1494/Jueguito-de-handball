@@ -309,6 +309,8 @@ function moverHacia(jugador, x, y){
 	if(ultimoEquipoConPelota===jugador.equipo&&ultimoEquipoConPelota.DT==='AI'&&(jugador.equipo===equipo0?x<jugador.centro.x:x>jugador.centro.x)) x=jugador.centro.x;
 	var vector=new p5.Vector(x-jugador.centro.x, y-jugador.centro.y);
 	var centroPrevio={x:jugador.centro.x, y:jugador.centro.y}
+	if (vector.x == 0 && vector.y == 0)
+		return;
 	vector.normalize();
 	vector.mult(jugador.velocidad);
 	jugador.centro.x=vector.x>0?min(jugador.centro.x+vector.x, x):max(jugador.centro.x+vector.x, x);
