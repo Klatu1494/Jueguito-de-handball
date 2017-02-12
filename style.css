@@ -11,7 +11,7 @@ body{
 	height:600px;
 	top:0;
 	left:0;
-	transition: top 1s linear, left 1s linear;
+	transition: top 0.75s linear, left 0.75s linear;
 }
 #menuPrincipal{
 	position:absolute;
