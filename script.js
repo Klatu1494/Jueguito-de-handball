@@ -207,8 +207,8 @@ function draw(){
 			}
 			pelota.centro={x:x, y:y};
 			//calculo la nueva dirección de la pelota
-			var anguloPelota=vector.heading();
 			var anguloEntrePelotaYPalo=atan2(palo.y-pelota.centro.y, palo.x-pelota.centro.x);
+			var anguloPelota=vector.heading(anguloEntrePelotaYPalo);
 			vector.rotate(2*(anguloEntrePelotaYPalo-anguloPelota));
 			pelota.velocidad={x:-0.85*vector.x, y:-0.85*vector.y};
 		}
@@ -297,7 +297,7 @@ function nuevoPartido(humanos){
 	}
 	dibujarJugadores();
 	equipo0=new Equipo(equipo0Seleccion.nombre, alMenosUnHumano?'humano':'AI', equipo0Seleccion.color1, 87, 65, 83, 68, 69, 81, 32, 'izquierda', cancha.x+cancha.width/2, cancha.x+cancha.width*4/5);
-	equipo1=new Equipo(equipo0Seleccion.nombre, alMenosUnHumano&&confirm('¿Con un/a amigo/a?')?'humano':'AI', equipo1Seleccion.color1===equipo0.color?equipo1Seleccion.color2:equipo1Seleccion.color1, 73, 74, 75, 76, 79, 85, 13, 'derecha', cancha.x+cancha.width/2, cancha.x+cancha.width/5);
+	equipo1=new Equipo(equipo1Seleccion.nombre, alMenosUnHumano&&confirm('¿Con un/a amigo/a?')?'humano':'AI', equipo1Seleccion.color1===equipo0.color?equipo1Seleccion.color2:equipo1Seleccion.color1, 73, 74, 75, 76, 79, 85, 13, 'derecha', cancha.x+cancha.width/2, cancha.x+cancha.width/5);
 	equipos=[equipo0, equipo1];
 	var stats={};
 	for(var stat in equipo0Seleccion.arquero.stats){

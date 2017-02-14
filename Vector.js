@@ -29,4 +29,16 @@ class Vector{
 		this.y*=numero;
 		return this;
 	}
+
+	heading(valorNulo){
+		if(this.x===0&&this.y===0) return valorNulo; //podría poner if(this.mag()===0) pero estaría calculando la magnitud al pedo en el caso de que no sea 0
+		return atan2(this.y, this.x);
+	}
+
+	rotate(angulo){
+		var mag=this.mag();
+		var heading=this.heading();
+		this.x=cos(this.heading+angulo)*mag;
+		this.x=sin(this.heading+angulo)*mag;
+	}
 }
