@@ -13,12 +13,18 @@ class Centro{
 	}
 
 	set x(x){
-		if(width<x||x<0||isNaN(x)) throw new Error();
+		if(width<x||x<0||isNaN(x)){
+			console.log(x);
+			throw new Error();
+		}
 		this._x=x;
 	}
 
 	set y(y){
-		if(width<y||y<0||isNaN(y)) throw new Error();
+		if(width<y||y<0||isNaN(y)){
+			console.log(y);
+			throw new Error();
+		}
 		this._y=y;
 	}
 }

@@ -1,5 +1,3 @@
-
-
 function jugadorMasCercanoA(x, y, jugadores){
 	var menorDistancia=Infinity;
 	for(var jugador of jugadores){

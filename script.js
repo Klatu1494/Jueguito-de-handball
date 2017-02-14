@@ -1,5 +1,6 @@
 const WIDTH=800;
 const HEIGHT=600;
+const maxStatValue=99;
 const g=450;
 const sizePelota=15;
 const sizePalos=20;
@@ -30,12 +31,12 @@ const equiposPredeterminados=[
 			color2:'#003580',
 			patron:'diagonal',
 			anchoPatron:5,
-			arquero:{atraccion:44, repulsion:80, punteria:25},
+			arquero:{stats:{atraccion:44, repulsion:80, punteria:25, fuerza:79, velocidad:76}},
 			jugadores:[
-				{stats:{atraccion:71, repulsion:64, punteria:81, fuerza:50}, x:cancha.width/5, y:cancha.height/3},
-				{stats:{atraccion:76, repulsion:63, punteria:59, fuerza:50}, x:cancha.width/5, y:cancha.height*2/3},
-				{stats:{atraccion:75, repulsion:78, punteria:74, fuerza:50}, x:cancha.width*2/5, y:cancha.height/5},
-				{stats:{atraccion:69, repulsion:76, punteria:74, fuerza:50}, x:cancha.width*2/5, y:cancha.height*4/5}
+				{stats:{atraccion:71, repulsion:64, punteria:81, fuerza:57, velocidad:69}, x:cancha.width/5, y:cancha.height/3},
+				{stats:{atraccion:76, repulsion:63, punteria:59, fuerza:72, velocidad:78}, x:cancha.width/5, y:cancha.height*2/3},
+				{stats:{atraccion:75, repulsion:78, punteria:74, fuerza:56, velocidad:45}, x:cancha.width*2/5, y:cancha.height/5},
+				{stats:{atraccion:69, repulsion:76, punteria:74, fuerza:54, velocidad:68}, x:cancha.width*2/5, y:cancha.height*4/5}
 			]
 		},
 		{
@@ -44,36 +45,36 @@ const equiposPredeterminados=[
 			color2:'#ffffff',
 			patron:'horizontal',
 			anchoPatron:8,
-			arquero:{atraccion:36, repulsion:65, punteria:31},
+			arquero:{stats:{atraccion:36, repulsion:65, punteria:31, fuerza:41, velocidad:71}},
 			jugadores:[
-				{stats:{atraccion:64, repulsion:62, punteria:62, fuerza:60}, x:cancha.width/5, y:cancha.height/3},
-				{stats:{atraccion:60, repulsion:70, punteria:59, fuerza:60}, x:cancha.width/5, y:cancha.height*2/3},
-				{stats:{atraccion:61, repulsion:67, punteria:60, fuerza:60}, x:cancha.width*2/5, y:cancha.height/5},
-				{stats:{atraccion:69, repulsion:68, punteria:64, fuerza:60}, x:cancha.width*2/5, y:cancha.height*4/5}
+				{stats:{atraccion:64, repulsion:62, punteria:62, fuerza:44, velocidad:40}, x:cancha.width/5, y:cancha.height/3},
+				{stats:{atraccion:60, repulsion:70, punteria:59, fuerza:50, velocidad:59}, x:cancha.width/5, y:cancha.height*2/3},
+				{stats:{atraccion:61, repulsion:67, punteria:60, fuerza:56, velocidad:75}, x:cancha.width*2/5, y:cancha.height/5},
+				{stats:{atraccion:69, repulsion:68, punteria:64, fuerza:69, velocidad:46}, x:cancha.width*2/5, y:cancha.height*4/5}
 			]
 		},
 		{
 			nombre:'A. F. M. Barceloniina',
 			color1:'#ff0000',
 			color2:'#0000ff',
-			arquero:{atraccion:31, repulsion:64, punteria:5},
+			arquero:{stats:{atraccion:31, repulsion:64, punteria:5, fuerza:59, velocidad:74}},
 			jugadores:[
-				{stats:{atraccion:68, repulsion:69, punteria:70, fuerza:50}, x:cancha.width/5, y:cancha.height/3},
-				{stats:{atraccion:62, repulsion:63, punteria:66, fuerza:50}, x:cancha.width/5, y:cancha.height*2/3},
-				{stats:{atraccion:67, repulsion:65, punteria:65, fuerza:50}, x:cancha.width*2/5, y:cancha.height/5},
-				{stats:{atraccion:65, repulsion:59, punteria:64, fuerza:50}, x:cancha.width*2/5, y:cancha.height*4/5}
+				{stats:{atraccion:68, repulsion:69, punteria:70, fuerza:71, velocidad:41}, x:cancha.width/5, y:cancha.height/3},
+				{stats:{atraccion:62, repulsion:63, punteria:66, fuerza:62, velocidad:78}, x:cancha.width/5, y:cancha.height*2/3},
+				{stats:{atraccion:67, repulsion:65, punteria:65, fuerza:68, velocidad:42}, x:cancha.width*2/5, y:cancha.height/5},
+				{stats:{atraccion:65, repulsion:59, punteria:64, fuerza:68, velocidad:55}, x:cancha.width*2/5, y:cancha.height*4/5}
 			]
 		},
 		{
 			nombre:'Groove Street',
 			color1:'#008800',
 			color2:'#008800',
-			arquero:{atraccion:13, repulsion:71, punteria:1},
+			arquero:{stats:{atraccion:13, repulsion:71, punteria:1, fuerza:78, velocidad:54}},
 			jugadores:[
-				{stats:{atraccion:71, repulsion:60, punteria:70, fuerza:50}, x:cancha.width/5, y:cancha.height/3},
-				{stats:{atraccion:69, repulsion:61, punteria:66, fuerza:50}, x:cancha.width/5, y:cancha.height*2/3},
-				{stats:{atraccion:64, repulsion:66, punteria:63, fuerza:50}, x:cancha.width*2/5, y:cancha.height/5},
-				{stats:{atraccion:67, repulsion:69, punteria:68, fuerza:50}, x:cancha.width*2/5, y:cancha.height*4/5}
+				{stats:{atraccion:71, repulsion:60, punteria:70, fuerza:40, velocidad:73}, x:cancha.width/5, y:cancha.height/3},
+				{stats:{atraccion:69, repulsion:61, punteria:66, fuerza:68, velocidad:60}, x:cancha.width/5, y:cancha.height*2/3},
+				{stats:{atraccion:64, repulsion:66, punteria:63, fuerza:40, velocidad:44}, x:cancha.width*2/5, y:cancha.height/5},
+				{stats:{atraccion:67, repulsion:69, punteria:68, fuerza:50, velocidad:70}, x:cancha.width*2/5, y:cancha.height*4/5}
 			]
 		}
 	]
@@ -82,7 +83,7 @@ const apuntarAEstoDelPalo={tiroLargo:115, tiroCorto:30};
 const precision=0.07;
 const colorPiel='#ffdfc4';
 const distanciaDeIntercepcion=80;
-const constanteDeDesvio=-15;
+const constanteDeDesvio=-7.5;
 
 var equipo0Seleccion;
 var equipo1Seleccion;
@@ -142,9 +143,9 @@ function draw(){
 	noStroke();
 	for(var equipo of equipos){
 		if(equipo.DT==='humano'){
-			var vector=new p5.Vector((equipo.teclaIzquierda.presionada?-1:0)+(equipo.teclaDerecha.presionada?1:0), (equipo.teclaArriba.presionada?-1:0)+(equipo.teclaAbajo.presionada?1:0));
+			var vector=new Vector((equipo.teclaIzquierda.presionada?-1:0)+(equipo.teclaDerecha.presionada?1:0), (equipo.teclaArriba.presionada?-1:0)+(equipo.teclaAbajo.presionada?1:0));
 			vector.normalize();
-			vector.mult(velocidadEquipo);
+			vector.multiply(velocidadEquipo);
 			equipo.centro.x+=vector.x;
 			equipo.centro.y+=vector.y;
 		}
@@ -180,7 +181,7 @@ function draw(){
 	fill('#1c1a1a')
 	for(var palo of cancha.palos){
 		if(sq(pelota.centro.x-palo.x)+sq(pelota.centro.y-palo.y)<=sq(sizePelota/2+sizePalos/2)){
-			vector=new p5.Vector(pelota.velocidad.x, pelota.velocidad.y);
+			vector=new Vector(pelota.velocidad.x, pelota.velocidad.y);
 			var x;
 			var y;
 			if(vector.x===0){
@@ -295,9 +296,14 @@ function nuevoPartido(humanos){
 		equipo1Seleccion=equiposPredeterminados[0][1];
 	}
 	dibujarJugadores();
-	equipo0=new Equipo(equipo0Seleccion.nombre, alMenosUnHumano?'humano':'AI', equipo0Seleccion.color1, 87, 65, 83, 68, 69, 81, 32, 'izquierda', width/2, width*4/5);
-	equipo1=new Equipo(equipo0Seleccion.nombre, alMenosUnHumano&&confirm('¿Con un/a amigo/a?')?'humano':'AI', equipo1Seleccion.color1===equipo0.color?equipo1Seleccion.color2:equipo1Seleccion.color1, 73, 74, 75, 76, 79, 85, 13, 'derecha', width/2, width/5);
+	equipo0=new Equipo(equipo0Seleccion.nombre, alMenosUnHumano?'humano':'AI', equipo0Seleccion.color1, 87, 65, 83, 68, 69, 81, 32, 'izquierda', cancha.x+cancha.width/2, cancha.x+cancha.width*4/5);
+	equipo1=new Equipo(equipo0Seleccion.nombre, alMenosUnHumano&&confirm('¿Con un/a amigo/a?')?'humano':'AI', equipo1Seleccion.color1===equipo0.color?equipo1Seleccion.color2:equipo1Seleccion.color1, 73, 74, 75, 76, 79, 85, 13, 'derecha', cancha.x+cancha.width/2, cancha.x+cancha.width/5);
 	equipos=[equipo0, equipo1];
+	var stats={};
+	for(var stat in equipo0Seleccion.arquero.stats){
+		stats[stat]=equipo0Seleccion.arquero.stats[stat];
+	}
+	equipo0.arquero=new Jugador(equipo0, 'arquero', cancha.x, cancha.y+cancha.height/2, stats);
 	for(var jugador of equipo0Seleccion.jugadores){
 		var stats={};
 		for(var stat in jugador.stats){
@@ -305,6 +311,11 @@ function nuevoPartido(humanos){
 		}
 		equipo0.agregarJugador(cancha.x+jugador.x, cancha.y+jugador.y, stats);
 	}
+	var stats={};
+	for(var stat in equipo1Seleccion.arquero.stats){
+		stats[stat]=equipo1Seleccion.arquero.stats[stat];
+	}
+	equipo1.arquero=new Jugador(equipo1, 'arquero', cancha.x+cancha.width, cancha.y+cancha.height/2, stats);
 	for(var jugador of equipo1Seleccion.jugadores){
 		var stats={};
 		for(var stat in jugador.stats){
@@ -312,7 +323,10 @@ function nuevoPartido(humanos){
 		}
 		equipo1.agregarJugador(cancha.y+cancha.width-jugador.x, cancha.y+cancha.height-jugador.y, stats);
 	}
-	for(equipo of equipos) equipo.goles=0;
+	for(equipo of equipos){
+		equipo.goles=0;
+		equipo.arquero.multiplicadorDeAtraccion=-equipo.arquero.stats.repulsion/50;
+	}
 	gol(false);
 	jugadorConPelota=null;
 }
@@ -330,9 +344,7 @@ function gol(equipoQueHizoGol){
 	var angulo=random(0, TWO_PI);
 	var radio=random(0, cancha.height/3);
 	pelota={centro:{x:cancha.x+cancha.width/2+cos(angulo)*radio, y:cancha.y+cancha.height/2+sin(angulo)*radio}, velocidad:{x:0, y:0}};
-	equipo0.arquero=new Jugador(equipo0, 'arquero', cancha.x, height/2, {atraccion:50, repulsion:50, punteria:50});
-	equipo1.arquero=new Jugador(equipo1, 'arquero', cancha.x+cancha.width, height/2, {atraccion:50, repulsion:50, punteria:50});
-	for(var equipo of equipos) equipo.arquero.multiplicadorDeAtraccion=-equipo.arquero.stats.repulsion/50;
+	for(var equipo of equipos) equipo.arquero.centro.y=cancha.y+cancha.height/2;
 	if(equipoQueHizoGol){
 		equipoQueHizoGol.goles++;
 	}

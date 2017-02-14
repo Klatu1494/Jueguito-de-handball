@@ -19,15 +19,25 @@ class Jugador{
 		if(x>cancha.x+cancha.width-this.size/2-cancha.margen&&this.tipo!=='arquero') x=cancha.x+cancha.width-this.size/2-cancha.margen;
 		if(y>cancha.y+cancha.height-this.size/2-cancha.margen) y=cancha.y+cancha.height-this.size/2-cancha.margen;
 		if(ultimoEquipoConPelota===this.equipo&&ultimoEquipoConPelota.DT==='AI'&&(this.equipo===equipo0?x<this.centro.x:x>this.centro.x)) x=this.centro.x;
-		var vector=new p5.Vector(x-this.centro.x, y-this.centro.y);
+		var vector=new Vector(x-this.centro.x, y-this.centro.y);
 		if(vector.mag()===0) return;
 		vector.normalize();
-		vector.mult(velocidadJugadores);
-		var nuevoCentro={x:vector.x>0?min(this.centro.x+vector.x, x):max(this.centro.x+vector.x, x), y:vector.y>0?min(this.centro.y+vector.y, y):max(this.centro.y+vector.y, y)};
+		vector.multiply(this.stats.velocidad/50);
+		var centro=this.centro;
+		var nuevoCentro=new Centro(vector.x>0?min(this.centro.x+vector.x, x):max(this.centro.x+vector.x, x), vector.y>0?min(this.centro.y+vector.y, y):max(this.centro.y+vector.y, y));
 		for(var equipo of equipos) for(var jugador of equipo.jugadores) if(dist(nuevoCentro.x, nuevoCentro.y, jugador.centro.x, jugador.centro.y)<sizeJugadores) this.empujarDesde(nuevoCentro.x, nuevoCentro.y, jugador, jugadoresEmpujados+1||1);
 		for(var equipo of equipos) for(var jugador of equipo.jugadores) if(this!==jugador){
-			if(dist(nuevoCentro.x, nuevoCentro.y, jugador.centro.x, jugador.centro.y)<sizeJugadores){
-				if(vector.x===0){
+			if(dist(nuevoCentro.x, nuevoCentro.y, jugador.centro.x, jugador.centro.y)<this.size/2+jugador.size/2){
+				if(vector.mag()===0){
+					var angulo;
+					if(jugador.centro.x===nuevoCentro.x&&jugador.centro.y===nuevoCentro.y){
+						angulo=random(0, TWO_PI);
+					}
+					else angulo=atan2(nuevoCentro.y-jugador.centro.y, nuevoCentro.x-jugador.centro.x);
+					x=jugador.centro.x+cos(angulo)*(this.size/2+jugador.size/2);
+					y=jugador.centro.y+sin(angulo)*(this.size/2+jugador.size/2);
+				}
+				else if(vector.x===0){
 					x=nuevoCentro.x;
 					var dX=nuevoCentro.x-jugador.centro.x;
 					y=jugador.centro.y-vector.y*sqrt(sq(this.size/2+jugador.size/2)-sq(dX))/abs(vector.y);
@@ -37,7 +47,7 @@ class Jugador{
 					var terminoIndependiente=-pendiente*nuevoCentro.x+nuevoCentro.y;
 					var a=sq(pendiente)+1;
 					var b=2*((terminoIndependiente-jugador.centro.y)*pendiente-jugador.centro.x);
-					var c=sq(terminoIndependiente-jugador.centro.y)+sq(jugador.centro.x)-sq(sizeJugadores);
+					var c=sq(terminoIndependiente-jugador.centro.y)+sq(jugador.centro.x)-sq(this.size/2+jugador.size/2);
 					//aplico la fórmula resolvente
 					var x1=(-b+sqrt(sq(b)-4*a*c))/2/a;
 					var x2=(-b-sqrt(sq(b)-4*a*c))/2/a;
@@ -50,8 +60,9 @@ class Jugador{
 						y=pendiente*x+terminoIndependiente;
 					}
 				}
-				nuevoCentro={x:x, y:y};
-				vector=new p5.Vector(nuevoCentro.x-vector.x, nuevoCentro.y-vector.y);
+				nuevoCentro=new Centro(x, y);
+				vector=new Vector(nuevoCentro.x-centro.x, nuevoCentro.y-centro.y);
+				centro=nuevoCentro;
 			}
 		}
 		this.centro.x=nuevoCentro.x;
@@ -59,11 +70,11 @@ class Jugador{
 	}
 
 	empujarDesde(x, y, jugador, jugadoresEmpujados){
-		if(jugador.stats.fuerza<this.stats.fuerza&&jugador.ultimoFrameEmpujado<frameCount){
-			var vector=new p5.Vector(jugador.centro.x-x, jugador.centro.y-y);
+		if(this.equipo!==jugador.equipo&&jugador.stats.fuerza<this.stats.fuerza&&jugador.ultimoFrameEmpujado<frameCount){
+			var vector=new Vector(jugador.centro.x-x, jugador.centro.y-y);
 			vector.normalize();
-			var fuerza=min(this.stats.fuerza/jugador.stats.fuerza-1, 1)/jugadoresEmpujados*velocidadJugadores; //máximo velocidadJugadores
-			var empuje=new p5.Vector(vector.x*fuerza, vector.y*fuerza);
+			var fuerza=min(this.stats.fuerza/jugador.stats.fuerza-1, 1)/jugadoresEmpujados*maxStatValue/50;
+			var empuje=new Vector(vector.x*fuerza, vector.y*fuerza);
 			jugador.ultimoFrameEmpujado=frameCount;
 			jugador.moverHacia(jugador.centro.x+empuje.x, jugador.centro.y+empuje.y, jugadoresEmpujados);
 		}
