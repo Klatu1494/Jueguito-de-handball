@@ -14,6 +14,7 @@ class Jugador{
 	}
 
 	moverHacia(x, y, jugadoresEmpujados){
+		if(this===equipo0.jugadores[2]) console.log('jugador('+this.centro.x+', '+this.centro.y+'): moverHacia('+x+', '+y+', '+jugadoresEmpujados+')');
 		if(x<cancha.x+this.size/2+cancha.margen&&this.tipo!=='arquero') x=cancha.x+this.size/2+cancha.margen;
 		if(y<cancha.y+this.size/2+cancha.margen) y=cancha.y+this.size/2+cancha.margen;
 		if(x>cancha.x+cancha.width-this.size/2-cancha.margen&&this.tipo!=='arquero') x=cancha.x+cancha.width-this.size/2-cancha.margen;
@@ -23,11 +24,11 @@ class Jugador{
 		if(vector.mag()===0) return;
 		vector.normalize();
 		vector.multiply(this.stats.velocidad/50);
-		var centro=this.centro;
+		var centroInicial=this.centro;
 		var nuevoCentro=new Centro(vector.x>0?min(this.centro.x+vector.x, x):max(this.centro.x+vector.x, x), vector.y>0?min(this.centro.y+vector.y, y):max(this.centro.y+vector.y, y));
-		for(var equipo of equipos) for(var jugador of equipo.jugadores) if(dist(nuevoCentro.x, nuevoCentro.y, jugador.centro.x, jugador.centro.y)<sizeJugadores) this.empujarDesde(nuevoCentro.x, nuevoCentro.y, jugador, jugadoresEmpujados+1||1);
+		for(var equipo of equipos) for(var jugador of equipo.jugadores) if(dist(nuevoCentro.x, nuevoCentro.y, jugador.centro.x, jugador.centro.y)<this.size/2+jugador.size/2-1/255) this.empujarDesde(nuevoCentro.x, nuevoCentro.y, jugador, jugadoresEmpujados+1||1);
 		for(var equipo of equipos) for(var jugador of equipo.jugadores) if(this!==jugador){
-			if(dist(nuevoCentro.x, nuevoCentro.y, jugador.centro.x, jugador.centro.y)<this.size/2+jugador.size/2){
+			if(dist(nuevoCentro.x, nuevoCentro.y, jugador.centro.x, jugador.centro.y)<this.size/2+jugador.size/2-1/255){
 				if(vector.mag()===0){
 					var angulo;
 					if(jugador.centro.x===nuevoCentro.x&&jugador.centro.y===nuevoCentro.y){
@@ -61,8 +62,7 @@ class Jugador{
 					}
 				}
 				nuevoCentro=new Centro(x, y);
-				vector=new Vector(nuevoCentro.x-centro.x, nuevoCentro.y-centro.y);
-				centro=nuevoCentro;
+				vector=new Vector(nuevoCentro.x-centroInicial.x, nuevoCentro.y-centroInicial.y);
 			}
 		}
 		this.centro.x=nuevoCentro.x;
