@@ -15,19 +15,11 @@ function apuntarA(x, y){
 	var delta=(atan2(y-jugadorConPelota.centro.y, x-jugadorConPelota.centro.x)-jugadorConPelota.angulo+2*TWO_PI)%TWO_PI;
 	if(!delta) return true;
 	var multiplicador=delta<PI?1:-1;
-	jugadorConPelota.angulo+=multiplicador*precision;
+	jugadorConPelota.angulo+=multiplicador*jugadorConPelota.stats.aimSpeed*aimSpeedConst;
 	if(jugadorConPelota.angulo<0) jugadorConPelota.angulo+=TWO_PI;
 	if(jugadorConPelota.angulo>=TWO_PI) jugadorConPelota.angulo-=TWO_PI;
 	delta=(atan2(y-jugadorConPelota.centro.y, x-jugadorConPelota.centro.x)-jugadorConPelota.angulo+2*TWO_PI)%TWO_PI;
-	return delta<precision||-delta+TWO_PI<precision;
-}
-
-function soltarPelota(){
-	var nAngulo = normalizador.RandomNormalizado (jugadorConPelota.angulo, 1 - jugadorConPelota.stats.punteria / 100);
-	jugadorConPelota.angulo = nAngulo;
-	pelota.centro={x:jugadorConPelota.centro.x+cos(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2, y:jugadorConPelota.centro.y+sin(jugadorConPelota.angulo)*(sizePelota+sizeJugadores)/2};
-	jugadorConPelota.multiplicadorDeAtraccion=(0<jugadorConPelota.multiplicadorDeAtraccion?-jugadorConPelota.stats.repulsion:jugadorConPelota.stats.atraccion)/50;
-	jugadorConPelota=null;
+	return delta<jugadorConPelota.stats.aimSpeed*aimSpeedConst||-delta+TWO_PI<jugadorConPelota.stats.aimSpeed*aimSpeedConst;
 }
 
 function tiro(x, y){
