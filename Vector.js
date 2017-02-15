@@ -38,7 +38,8 @@ class Vector{
 	rotate(angulo){
 		var mag=this.mag();
 		var heading=this.heading();
-		this.x=cos(this.heading+angulo)*mag;
-		this.x=sin(this.heading+angulo)*mag;
+		this.x=cos(heading+angulo)*mag;
+		this.y=sin(heading+angulo)*mag;
+		return this;
 	}
 }

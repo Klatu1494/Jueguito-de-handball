@@ -184,6 +184,15 @@ function draw(){
 			vector=new Vector(pelota.velocidad.x, pelota.velocidad.y);
 			var x;
 			var y;
+			if(vector.mag()===0){
+				var angulo;
+				if(palo.x===pelota.centro.x&&palo.y===pelota.centro.y){
+					angulo=random(0, TWO_PI);
+				}
+				else angulo=atan2(pelota.centro.y-palo.y, pelota.centro.x-palo.x);
+				x=palo.x+cos(angulo)*(sizePelota/2+sizePalos/2);
+				y=palo.y+sin(angulo)*(sizePelota/2+sizePalos/2);
+			}
 			if(vector.x===0){
 				x=pelota.centro.x;
 				var dX=x-palo.x;

@@ -14,7 +14,6 @@ class Jugador{
 	}
 
 	moverHacia(x, y, jugadoresEmpujados){
-		if(this===equipo0.jugadores[2]) console.log('jugador('+this.centro.x+', '+this.centro.y+'): moverHacia('+x+', '+y+', '+jugadoresEmpujados+')');
 		if(x<cancha.x+this.size/2+cancha.margen&&this.tipo!=='arquero') x=cancha.x+this.size/2+cancha.margen;
 		if(y<cancha.y+this.size/2+cancha.margen) y=cancha.y+this.size/2+cancha.margen;
 		if(x>cancha.x+cancha.width-this.size/2-cancha.margen&&this.tipo!=='arquero') x=cancha.x+cancha.width-this.size/2-cancha.margen;
