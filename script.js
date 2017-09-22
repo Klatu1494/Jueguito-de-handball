@@ -196,7 +196,7 @@ function draw(){
 			if(vector.x===0){
 				x=pelota.centro.x;
 				var dX=x-palo.x;
-				y=palo.y-sqrt(sq(sizePelota/2+sizePalos/2)-sq(dX));
+				y=palo.y-vector.y*sqrt(sq(sizePelota/2+sizePalos/2)-sq(dX))/abs(vector.y);
 			}
 			var pendiente=vector.y/vector.x;
 			var terminoIndependiente=-pendiente*pelota.centro.x+pelota.centro.y;
@@ -443,42 +443,40 @@ class Combinatoria {
 		return this.Factorial (n) / (this.Factorial(c) * this.Factorial(n-c));
 	}
 }
-
-class NormalizadorRandom{
-	constructor (norm){
+class NormalizadorRandom {
+	constructor(norm) {
 		this.Norm = norm;
 		this.CombGeneradas = new Array(norm);
 		this.Inicializar();
 	}
 
-	Inicializar (){
+	Inicializar() {
 		for (var i = 0; i <= this.Norm; i++) {
 			this.CombGeneradas[i] = Combinatoria.Comb(this.Norm, i);
 		}
 	}
-	
+
 	// Rand normalizado. Devuelve un real esperado expected, con máximo error epsilon
-	RandomNormalizado (expected, epsilon){
-		var r = this.RandomNormalizadoUnitario ();
-		var ret = r * (2 * epsilon) + (expected - 0.5); 
+	RandomNormalizado(expected, epsilon) {
+		var r = this.RandomNormalizadoUnitario();
+		var ret = r * (2 * epsilon) + (expected - 0.5);
 		return ret;
 	}
 
 	// Random normalizado. Devuelve un real en [0,1] normalizado a 0.5
-	RandomNormalizadoUnitario (){
+	RandomNormalizadoUnitario() {
 		var i = 0;
 		var c = 1;
-		var r = Math.random () * Math.pow(2, this.Norm);
+		var r = Math.random() * Math.pow(2, this.Norm);
 		while (c < r) {
 			r -= c;
 			i++;
 			c = this.CombGeneradas[i];
 		}
 		// i es el intervalo elegido
-		return (i + Math.random ()) / this.Norm;
+		return (i + Math.random()) / this.Norm;
 	}
 }
-
 function actualizarSlider1(){
 	for(var equipo of equiposPredeterminados[0]){
 		if(equipo0Seleccion===equipo) continue;

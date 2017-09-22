@@ -70,7 +70,7 @@ class Equipo{
 						this.centro.x=x-jugador.posicionEnFormacion.x;
 						this.centro.y=y-jugador.posicionEnFormacion.y;
 						if(multiplicador*this.distanciaDeTiroCorto<multiplicador*jugadorConPelota.centro.x&&multiplicador*jugadorConPelota.centro.x<multiplicador*this.distanciaDeTiroLargo&&jugadorConPelota.equipo.arquero.centro.y===topArcos+sizePalos/2+this.arquero.size/2+sizePelota&&noHayJugadoresDelanteDe(jugadorConPelota, multiplicador)) tiro(xArcoContrario, bottomArcos-apuntarAEstoDelPalo.tiroLargo);
-						else if(multiplicador*jugadorConPelota.centro.x<=multiplicador*this.distanciaDeTiroCorto&&jugadorConPelota.equipo.arquero.centro.y>height/2) tiro(xArcoContrario, topArcos+apuntarAEstoDelPalo.tiroCorto);
+						else if(multiplicador*jugadorConPelota.centro.x<=multiplicador*this.distanciaDeTiroCorto&&jugadorConPelota.equipo.arquero.centro.y>height/2+jugadorConPelota.size/2+sizePelota) tiro(xArcoContrario, topArcos+apuntarAEstoDelPalo.tiroCorto);
 						else{
 							this.jugadores.sort(sortFunction);
 							var pelotaPasada=false;
@@ -89,7 +89,7 @@ class Equipo{
 						var jugador=jugadorMasCercanoA(x, y, this.jugadores);
 						this.centro={x:x-jugador.posicionEnFormacion.x, y:y-jugador.posicionEnFormacion.y};
 						if(multiplicador*this.distanciaDeTiroCorto<multiplicador*jugadorConPelota.centro.x&&multiplicador*jugadorConPelota.centro.x<multiplicador*this.distanciaDeTiroLargo&&jugadorConPelota.equipo.arquero.centro.y===bottomArcos-sizePalos/2-this.arquero.size/2-sizePelota&&noHayJugadoresDelanteDe(jugadorConPelota, multiplicador)) tiro(xArcoContrario, topArcos+apuntarAEstoDelPalo.tiroLargo);
-						else if(multiplicador*jugadorConPelota.centro.x<=multiplicador*this.distanciaDeTiroCorto&&jugadorConPelota.equipo.arquero.centro.y<height/2) tiro(xArcoContrario, bottomArcos-apuntarAEstoDelPalo.tiroCorto);
+						else if(multiplicador*jugadorConPelota.centro.x<=multiplicador*this.distanciaDeTiroCorto&&jugadorConPelota.equipo.arquero.centro.y<height/2-jugadorConPelota.size/2-sizePelota) tiro(xArcoContrario, bottomArcos-apuntarAEstoDelPalo.tiroCorto);
 						else{
 							this.jugadores.sort(sortFunction);
 							var pelotaPasada=false;
