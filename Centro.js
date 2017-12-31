@@ -1,30 +1,28 @@
-class Centro{
-	constructor(x, y){
-		this._x=x;
-		this._y=y;
+class Centro {
+	constructor(x, y) {
+		this._x = x;
+		this._y = y;
 	}
 
-	get x(){
+	get x() {
 		return this._x;
 	}
 
-	get y(){
+	get y() {
 		return this._y;
 	}
 
-	set x(x){
-		if(width<x||x<0||isNaN(x)){
-			console.log(x);
+	set x(x) {
+		if (width < x || x < 0 || isNaN(x)) {
 			throw new Error();
 		}
-		this._x=x;
+		this._x = x;
 	}
 
-	set y(y){
-		if(width<y||y<0||isNaN(y)){
-			console.log(y);
+	set y(y) {
+		if (width < y || y < 0 || isNaN(y)) {
 			throw new Error();
 		}
-		this._y=y;
+		this._y = y;
 	}
 }
